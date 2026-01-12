@@ -1,0 +1,29 @@
+{
+  "key": "command-injection",
+  "name": "Command Injection Vulnerability",
+  "description": "Detects potential OS command injection vulnerabilities where user input is passed to system commands without proper sanitization.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "injection", "owasp-top-10", "command-execution"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "Runtime.getRuntime().exec(\"ping \" + userInput);",
+        "after": "ProcessBuilder pb = new ProcessBuilder(\"ping\", \"-c\", \"1\", sanitizedHost);\npb.redirectErrorStream(true);\nProcess p = pb.start();"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

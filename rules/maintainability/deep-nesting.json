@@ -1,0 +1,38 @@
+{
+  "key": "deep-nesting",
+  "name": "Deeply Nested Code",
+  "description": "Detects code with excessive nesting levels (if statements, loops, try blocks), which reduces readability and increases cognitive complexity.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "complexity", "readability", "refactoring"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "if (a) {\n  if (b) {\n    if (c) {\n      if (d) {\n        doSomething();\n      }\n    }\n  }\n}",
+        "after": "if (!a || !b || !c || !d) {\n  return;\n}\ndoSomething();"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  },
+  "params": [
+    {
+      "key": "maxDepth",
+      "name": "Maximum Nesting Depth",
+      "description": "Maximum allowed nesting depth",
+      "defaultValue": "4",
+      "type": "INTEGER"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "key": "long-parameter-list",
+  "name": "Long Parameter List",
+  "description": "Detects methods with too many parameters, which makes them difficult to understand, call correctly, and maintain. Consider using parameter objects or builder patterns.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "refactoring", "readability"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public Order createOrder(String customerId, String productId, int quantity, double price, String address, String city, String zipCode, String country, boolean express) {}",
+        "after": "public Order createOrder(Customer customer, Product product, ShippingAddress address, OrderOptions options) {}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  },
+  "params": [
+    {
+      "key": "maxParams",
+      "name": "Maximum Parameters",
+      "description": "Maximum number of parameters allowed",
+      "defaultValue": "5",
+      "type": "INTEGER"
+    }
+  ]
+}

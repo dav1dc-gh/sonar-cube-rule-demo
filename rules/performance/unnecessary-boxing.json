@@ -1,0 +1,29 @@
+{
+  "key": "unnecessary-boxing",
+  "name": "Unnecessary Boxing/Unboxing",
+  "description": "Detects unnecessary conversions between primitive types and their wrapper classes, which impacts performance and memory usage.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "memory", "primitives", "optimization"],
+  "remediation": {
+    "constantCost": "5min",
+    "examples": [
+      {
+        "before": "Integer total = 0;\nfor (int i = 0; i < 1000; i++) {\n  total = total + i; // Boxing/unboxing on each iteration\n}",
+        "after": "int total = 0;\nfor (int i = 0; i < 1000; i++) {\n  total += i;\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "5min"
+  }
+}

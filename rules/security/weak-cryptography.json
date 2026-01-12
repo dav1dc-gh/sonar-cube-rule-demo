@@ -1,0 +1,29 @@
+{
+  "key": "weak-cryptography",
+  "name": "Weak Cryptographic Algorithm",
+  "description": "Detects usage of weak or deprecated cryptographic algorithms such as MD5, SHA1, DES, or RC4 that are vulnerable to attacks.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "cryptography", "encryption", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "MessageDigest md = MessageDigest.getInstance(\"MD5\");",
+        "after": "MessageDigest md = MessageDigest.getInstance(\"SHA-256\");"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

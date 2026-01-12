@@ -1,0 +1,29 @@
+{
+  "key": "insecure-deserialization",
+  "name": "Insecure Deserialization",
+  "description": "Detects unsafe deserialization of untrusted data which can lead to remote code execution, denial of service, or other attacks.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "deserialization", "owasp-top-10", "rce"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "ObjectInputStream ois = new ObjectInputStream(untrustedStream);\nObject obj = ois.readObject();",
+        "after": "// Use a safe serialization library like JSON with type validation\nObjectMapper mapper = new ObjectMapper();\nmapper.activateDefaultTyping(mapper.getPolymorphicTypeValidator());\nMyClass obj = mapper.readValue(data, MyClass.class);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

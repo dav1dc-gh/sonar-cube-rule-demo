@@ -1,0 +1,29 @@
+{
+  "key": "missing-javadoc",
+  "name": "Missing Documentation",
+  "description": "Detects public classes, methods, and interfaces that lack proper documentation comments, making the code harder to understand and use.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "documentation", "javadoc", "readability"],
+  "remediation": {
+    "constantCost": "10min",
+    "examples": [
+      {
+        "before": "public double calculateInterest(double principal, double rate, int years) {\n  return principal * Math.pow(1 + rate, years) - principal;\n}",
+        "after": "/**\n * Calculates compound interest for a given principal amount.\n * @param principal The initial investment amount\n * @param rate The annual interest rate (e.g., 0.05 for 5%)\n * @param years The number of years to compound\n * @return The total interest earned\n */\npublic double calculateInterest(double principal, double rate, int years) {\n  return principal * Math.pow(1 + rate, years) - principal;\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "10min"
+  }
+}

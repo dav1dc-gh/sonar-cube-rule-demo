@@ -1,0 +1,46 @@
+{
+  "key": "god-class",
+  "name": "God Class Detection",
+  "description": "Detects classes that have grown too large and handle too many responsibilities, violating the Single Responsibility Principle and making the code difficult to understand and maintain.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "solid", "maintainability"],
+  "remediation": {
+    "constantCost": "4h",
+    "examples": [
+      {
+        "before": "// Class with 2000+ lines handling user management, email, reporting, and file operations",
+        "after": "// Split into UserService, EmailService, ReportingService, and FileService classes"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "LINEAR",
+    "coefficient": "10min",
+    "offset": "0min"
+  },
+  "params": [
+    {
+      "key": "maxLines",
+      "name": "Maximum Lines",
+      "description": "Maximum number of lines allowed in a class",
+      "defaultValue": "500",
+      "type": "INTEGER"
+    },
+    {
+      "key": "maxMethods",
+      "name": "Maximum Methods",
+      "description": "Maximum number of methods allowed in a class",
+      "defaultValue": "20",
+      "type": "INTEGER"
+    }
+  ]
+}

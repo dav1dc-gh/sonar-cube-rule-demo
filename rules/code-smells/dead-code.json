@@ -1,0 +1,29 @@
+{
+  "key": "dead-code",
+  "name": "Dead Code Detection",
+  "description": "Detects unreachable code, unused variables, methods, or classes that serve no purpose and should be removed to improve code clarity.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "unused", "cleanup", "maintainability"],
+  "remediation": {
+    "constantCost": "5min",
+    "examples": [
+      {
+        "before": "public void process() {\n  return;\n  int x = 5; // Unreachable code\n}",
+        "after": "public void process() {\n  return;\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "5min"
+  }
+}
