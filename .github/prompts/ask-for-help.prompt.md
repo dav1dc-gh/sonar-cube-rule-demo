@@ -1,0 +1,1 @@
+I am totally new to managing repositories full of Sonar Cube Rules files, is there anything I could be doing better to ensure long term maintainability and ease of use when it comes time to apply these rules to a Sonar Cube instance?
