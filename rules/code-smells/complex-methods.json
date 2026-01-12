@@ -1,0 +1,39 @@
+{
+  "key": "complex-methods",
+  "name": "High Cyclomatic Complexity",
+  "description": "Detects methods or functions with high cyclomatic complexity (too many decision points), making them difficult to understand, test, and maintain.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "complexity", "maintainability", "testing"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "// Function with 20+ if/else statements and nested loops",
+        "after": "// Break down into smaller, focused functions with single responsibilities"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "LINEAR",
+    "coefficient": "1min",
+    "offset": "30min"
+  },
+  "params": [
+    {
+      "key": "threshold",
+      "name": "Complexity Threshold",
+      "description": "Maximum allowed cyclomatic complexity",
+      "defaultValue": "15",
+      "type": "INTEGER"
+    }
+  ]
+}

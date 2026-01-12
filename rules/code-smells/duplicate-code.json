@@ -1,0 +1,29 @@
+{
+  "key": "duplicate-code",
+  "name": "Duplicate Code Blocks",
+  "description": "Identifies duplicate or nearly identical code blocks that should be refactored into reusable functions or methods to improve maintainability and reduce technical debt.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "duplication", "maintainability", "dry-principle"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "// Same code repeated in multiple places\nfunction processUserA() { validate(); transform(); save(); }\nfunction processUserB() { validate(); transform(); save(); }",
+        "after": "function processUser(user) { validate(user); transform(user); save(user); }\n// Call with different users"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}
