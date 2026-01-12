@@ -1,0 +1,29 @@
+{
+  "key": "missing-null-check",
+  "name": "Missing Null Check",
+  "description": "Detects potential null pointer dereferences where objects are used without proper null validation, leading to runtime NullPointerExceptions.",
+  "severity": "MAJOR",
+  "type": "BUG",
+  "tags": ["maintainability", "null-safety", "defensive-programming", "reliability"],
+  "remediation": {
+    "constantCost": "10min",
+    "examples": [
+      {
+        "before": "User user = userRepository.findById(id);\nString email = user.getEmail(); // May throw NPE",
+        "after": "User user = userRepository.findById(id);\nif (user == null) {\n  throw new UserNotFoundException(id);\n}\nString email = user.getEmail();"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "10min"
+  }
+}

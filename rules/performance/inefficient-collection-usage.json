@@ -1,0 +1,29 @@
+{
+  "key": "inefficient-collection-usage",
+  "name": "Inefficient Collection Usage",
+  "description": "Detects improper use of collections such as using LinkedList for random access, ArrayList for frequent insertions, or not specifying initial capacity for large collections.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "collections", "data-structures", "optimization"],
+  "remediation": {
+    "constantCost": "10min",
+    "examples": [
+      {
+        "before": "List<User> users = new ArrayList<>();\n// Adding 10000 users without initial capacity",
+        "after": "List<User> users = new ArrayList<>(10000);\n// Pre-sized to avoid multiple array resizing operations"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "10min"
+  }
+}

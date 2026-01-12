@@ -1,0 +1,29 @@
+{
+  "key": "inconsistent-naming",
+  "name": "Inconsistent Naming Convention",
+  "description": "Detects variables, methods, and classes that don't follow established naming conventions (camelCase, PascalCase, SCREAMING_SNAKE_CASE), reducing code consistency.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "naming", "conventions", "readability"],
+  "remediation": {
+    "constantCost": "5min",
+    "examples": [
+      {
+        "before": "int MyVariable = 5;\nString user_name = \"john\";\npublic void ProcessData() {}",
+        "after": "int myVariable = 5;\nString userName = \"john\";\npublic void processData() {}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "5min"
+  }
+}

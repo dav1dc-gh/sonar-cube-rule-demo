@@ -1,0 +1,29 @@
+{
+  "key": "insecure-random",
+  "name": "Insecure Random Number Generator",
+  "description": "Detects usage of predictable random number generators (like java.util.Random) for security-sensitive operations such as token generation or cryptographic purposes.",
+  "severity": "MAJOR",
+  "type": "VULNERABILITY",
+  "tags": ["security", "random", "cryptography", "tokens"],
+  "remediation": {
+    "constantCost": "10min",
+    "examples": [
+      {
+        "before": "Random random = new Random();\nString token = String.valueOf(random.nextLong());",
+        "after": "SecureRandom secureRandom = new SecureRandom();\nbyte[] tokenBytes = new byte[32];\nsecureRandom.nextBytes(tokenBytes);\nString token = Base64.getEncoder().encodeToString(tokenBytes);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "10min"
+  }
+}

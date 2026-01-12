@@ -1,0 +1,29 @@
+{
+  "key": "string-concatenation-in-loop",
+  "name": "String Concatenation in Loop",
+  "description": "Detects string concatenation using + operator inside loops, which creates unnecessary string objects and degrades performance.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "memory", "strings", "optimization"],
+  "remediation": {
+    "constantCost": "10min",
+    "examples": [
+      {
+        "before": "String result = \"\";\nfor (String item : items) {\n  result += item + \", \";\n}",
+        "after": "StringBuilder sb = new StringBuilder();\nfor (String item : items) {\n  sb.append(item).append(\", \");\n}\nString result = sb.toString();"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "10min"
+  }
+}

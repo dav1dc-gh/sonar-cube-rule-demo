@@ -1,0 +1,29 @@
+{
+  "key": "feature-envy",
+  "name": "Feature Envy",
+  "description": "Detects methods that use more features from other classes than from their own class, indicating the method may be misplaced.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "refactoring", "oop"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "class Order {\n  double calculateTotal(Customer c) {\n    return c.getDiscount() * c.getBasePrice() - c.getLoyaltyPoints();\n  }\n}",
+        "after": "class Customer {\n  double calculateTotal() {\n    return this.discount * this.basePrice - this.loyaltyPoints;\n  }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

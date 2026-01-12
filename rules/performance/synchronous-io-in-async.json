@@ -1,0 +1,29 @@
+{
+  "key": "synchronous-io-in-async",
+  "name": "Synchronous I/O in Async Context",
+  "description": "Detects blocking I/O operations within asynchronous methods or reactive streams, which defeats the purpose of async programming and can cause thread pool exhaustion.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "async", "reactive", "concurrency"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public Mono<User> getUser(String id) {\n  User user = userRepository.findById(id); // Blocking call!\n  return Mono.just(user);\n}",
+        "after": "public Mono<User> getUser(String id) {\n  return userRepository.findById(id); // Returns Mono<User>\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

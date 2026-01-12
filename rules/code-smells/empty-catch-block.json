@@ -1,0 +1,29 @@
+{
+  "key": "empty-catch-block",
+  "name": "Empty Catch Block",
+  "description": "Detects empty catch blocks that silently swallow exceptions, hiding potential errors and making debugging difficult.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "error-handling", "exceptions", "debugging"],
+  "remediation": {
+    "constantCost": "10min",
+    "examples": [
+      {
+        "before": "try {\n  riskyOperation();\n} catch (Exception e) {\n  // Empty - do nothing\n}",
+        "after": "try {\n  riskyOperation();\n} catch (Exception e) {\n  logger.error(\"Operation failed\", e);\n  throw new ServiceException(\"Failed to perform operation\", e);\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "10min"
+  }
+}

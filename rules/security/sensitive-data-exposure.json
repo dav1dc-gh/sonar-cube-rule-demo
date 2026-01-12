@@ -1,0 +1,29 @@
+{
+  "key": "sensitive-data-exposure",
+  "name": "Sensitive Data Exposure in Logs",
+  "description": "Detects logging of sensitive information such as passwords, credit card numbers, social security numbers, or personal identifiable information (PII).",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "logging", "pii", "gdpr", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "logger.info(\"User login attempt: \" + username + \" with password: \" + password);",
+        "after": "logger.info(\"User login attempt: {} with password: [REDACTED]\", username);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

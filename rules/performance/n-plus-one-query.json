@@ -1,0 +1,29 @@
+{
+  "key": "n-plus-one-query",
+  "name": "N+1 Query Problem",
+  "description": "Detects potential N+1 query issues where database queries are executed inside loops, causing severe performance degradation.",
+  "severity": "CRITICAL",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "database", "orm", "optimization"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "List<Order> orders = orderRepository.findAll();\nfor (Order order : orders) {\n  Customer c = customerRepository.findById(order.getCustomerId()); // N+1 queries!\n}",
+        "after": "List<Order> orders = orderRepository.findAllWithCustomers(); // Single query with JOIN"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

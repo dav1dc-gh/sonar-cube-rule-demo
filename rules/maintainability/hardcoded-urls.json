@@ -1,0 +1,29 @@
+{
+  "key": "hardcoded-urls",
+  "name": "Hardcoded URLs and Endpoints",
+  "description": "Detects hardcoded URLs, IP addresses, and endpoints that should be externalized to configuration files for better maintainability and environment flexibility.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "configuration", "deployment", "best-practices"],
+  "remediation": {
+    "constantCost": "10min",
+    "examples": [
+      {
+        "before": "String apiUrl = \"https://api.production.company.com/v1/users\";",
+        "after": "@Value(\"${api.base.url}\")\nprivate String apiUrl;"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "10min"
+  }
+}
