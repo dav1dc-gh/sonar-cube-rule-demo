@@ -16,7 +16,7 @@
   },
   "impacts": [
     {
-      "softwareQuality": "RELIABILITY",
+      "softwareQuality": "MAINTAINABILITY",
       "severity": "MEDIUM"
     }
   ],
