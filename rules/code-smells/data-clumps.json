@@ -1,0 +1,29 @@
+{
+  "key": "data-clumps",
+  "name": "Data Clumps",
+  "description": "Detects groups of variables that frequently appear together across multiple methods or classes. Data clumps often indicate a missing class or struct that should encapsulate these related values. Extract data clumps into dedicated classes to improve cohesion and reduce duplication.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "refactoring", "cohesion"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public void createUser(String street, String city, String zipCode, String country) { }\npublic void updateAddress(String street, String city, String zipCode, String country) { }\npublic void validateAddress(String street, String city, String zipCode, String country) { }",
+        "after": "public class Address {\n    private String street, city, zipCode, country;\n    // constructor, getters, validation\n}\n\npublic void createUser(Address address) { }\npublic void updateAddress(Address address) { }\npublic void validateAddress(Address address) { }"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

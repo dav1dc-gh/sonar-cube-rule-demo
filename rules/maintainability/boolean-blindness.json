@@ -1,0 +1,38 @@
+{
+  "key": "boolean-blindness",
+  "name": "Boolean Blindness",
+  "description": "Detects methods with multiple boolean parameters or return values whose meaning is unclear at the call site. Boolean parameters make code harder to read and prone to errors. Replace with enums, builder patterns, or separate methods with descriptive names.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "readability", "api-design", "clean-code"],
+  "remediation": {
+    "constantCost": "25min",
+    "examples": [
+      {
+        "before": "// What do these booleans mean?\nprocessOrder(order, true, false, true);\n\npublic void processOrder(Order order, boolean validate, boolean async, boolean notify) { }",
+        "after": "// Clear intent with enum or builder\nprocessOrder(order, ProcessingOptions.builder()\n    .withValidation()\n    .synchronous()\n    .withNotification()\n    .build());\n\n// Or separate methods\nvalidateAndProcessOrder(order);\nprocessOrderWithNotification(order);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "25min"
+  },
+  "params": [
+    {
+      "key": "maxBooleanParams",
+      "name": "Maximum Boolean Parameters",
+      "description": "Maximum number of boolean parameters allowed before triggering the rule",
+      "defaultValue": "2",
+      "type": "INTEGER"
+    }
+  ]
+}

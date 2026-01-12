@@ -1,0 +1,29 @@
+{
+  "key": "primitive-obsession",
+  "name": "Primitive Obsession",
+  "description": "Detects overuse of primitive types instead of small objects for domain concepts. Using primitives for values like money, phone numbers, or email addresses leads to scattered validation logic, reduced type safety, and harder-to-understand code. Wrap primitives in value objects.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "domain-driven-design", "refactoring"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public void processOrder(String email, double price, String currency, String phoneNumber) {\n    if (!email.contains(\"@\")) throw new IllegalArgumentException();\n    if (price < 0) throw new IllegalArgumentException();\n    // validation scattered throughout codebase\n}",
+        "after": "public void processOrder(Email email, Money price, PhoneNumber phoneNumber) {\n    // validation encapsulated in value objects\n    orderService.process(email, price, phoneNumber);\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

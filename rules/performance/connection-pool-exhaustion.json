@@ -1,0 +1,29 @@
+{
+  "key": "connection-pool-exhaustion",
+  "name": "Connection Pool Exhaustion Risk",
+  "description": "Detects database or HTTP connections that are not properly closed or returned to the pool. Leaked connections exhaust the pool, causing application hangs and failures under load. Always close connections in finally blocks or use try-with-resources.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["performance", "database", "resource-leak", "connection-pool"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "public User findUser(int id) throws SQLException {\n    Connection conn = dataSource.getConnection();\n    PreparedStatement stmt = conn.prepareStatement(\"SELECT * FROM users WHERE id = ?\");\n    stmt.setInt(1, id);\n    ResultSet rs = stmt.executeQuery();\n    // Connection never closed if exception occurs\n    return mapUser(rs);\n}",
+        "after": "public User findUser(int id) throws SQLException {\n    try (Connection conn = dataSource.getConnection();\n         PreparedStatement stmt = conn.prepareStatement(\"SELECT * FROM users WHERE id = ?\")) {\n        stmt.setInt(1, id);\n        try (ResultSet rs = stmt.executeQuery()) {\n            return mapUser(rs);\n        }\n    }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "hidden-dependencies",
+  "name": "Hidden Dependencies",
+  "description": "Detects dependencies that are not explicit in method signatures, such as using global state, singletons, static method calls, or service locators. Hidden dependencies make code harder to test and understand. Use dependency injection to make all dependencies explicit.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "design", "testability", "dependency-injection"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public class OrderProcessor {\n    public void process(Order order) {\n        // Hidden dependencies - hard to test\n        User user = UserContext.getCurrentUser();\n        Logger logger = LoggerFactory.getLogger();\n        EmailService.getInstance().sendConfirmation(user, order);\n    }\n}",
+        "after": "public class OrderProcessor {\n    private final UserProvider userProvider;\n    private final Logger logger;\n    private final EmailService emailService;\n    \n    public OrderProcessor(UserProvider userProvider, Logger logger, EmailService emailService) {\n        this.userProvider = userProvider;\n        this.logger = logger;\n        this.emailService = emailService;\n    }\n    \n    public void process(Order order) {\n        User user = userProvider.getCurrentUser();\n        emailService.sendConfirmation(user, order);\n    }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

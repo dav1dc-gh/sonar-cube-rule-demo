@@ -1,0 +1,29 @@
+{
+  "key": "excessive-object-creation",
+  "name": "Excessive Object Creation in Hot Path",
+  "description": "Detects unnecessary object allocation in frequently executed code paths such as loops or high-traffic methods. Excessive object creation increases garbage collection pressure and degrades performance. Reuse objects, use object pools, or prefer primitive types where possible.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "memory", "gc", "optimization"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "for (int i = 0; i < 1000000; i++) {\n    Date date = new Date(); // new object each iteration\n    SimpleDateFormat sdf = new SimpleDateFormat(\"yyyy-MM-dd\");\n    String formatted = sdf.format(date);\n}",
+        "after": "SimpleDateFormat sdf = new SimpleDateFormat(\"yyyy-MM-dd\"); // reuse formatter\nDate date = new Date();\nfor (int i = 0; i < 1000000; i++) {\n    date.setTime(System.currentTimeMillis()); // reuse date object\n    String formatted = sdf.format(date);\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

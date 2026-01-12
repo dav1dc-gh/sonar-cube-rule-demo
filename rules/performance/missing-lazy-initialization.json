@@ -1,0 +1,29 @@
+{
+  "key": "missing-lazy-initialization",
+  "name": "Missing Lazy Initialization",
+  "description": "Detects expensive resources or objects that are eagerly initialized but may not always be used. This wastes memory and increases startup time. Use lazy initialization patterns to defer creation until first access, especially for database connections, file handles, or large data structures.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "memory", "initialization", "optimization"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "public class ReportGenerator {\n    // Always loaded even if never used\n    private final ExpensiveResource resource = new ExpensiveResource();\n    private final List<Data> cache = loadAllData();\n}",
+        "after": "public class ReportGenerator {\n    private ExpensiveResource resource;\n    private List<Data> cache;\n    \n    public ExpensiveResource getResource() {\n        if (resource == null) {\n            resource = new ExpensiveResource();\n        }\n        return resource;\n    }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

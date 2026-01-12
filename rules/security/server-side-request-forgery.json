@@ -1,0 +1,29 @@
+{
+  "key": "server-side-request-forgery",
+  "name": "Server-Side Request Forgery (SSRF)",
+  "description": "Detects when user-controlled URLs are used to make server-side HTTP requests without validation. SSRF allows attackers to make requests to internal services, cloud metadata endpoints, or other protected resources. Always validate and whitelist allowed destinations.",
+  "severity": "BLOCKER",
+  "type": "VULNERABILITY",
+  "tags": ["security", "owasp-top-10", "ssrf", "network"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "String url = request.getParameter(\"url\");\nHttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();\nInputStream response = conn.getInputStream();",
+        "after": "String url = request.getParameter(\"url\");\nif (isAllowedUrl(url, ALLOWED_HOSTS, BLOCKED_IP_RANGES)) {\n    HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();\n    InputStream response = conn.getInputStream();\n} else {\n    throw new SecurityException(\"URL not allowed\");\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "BLOCKER",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

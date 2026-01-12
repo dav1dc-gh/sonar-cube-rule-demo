@@ -1,0 +1,29 @@
+{
+  "key": "unbounded-collection-growth",
+  "name": "Unbounded Collection Growth",
+  "description": "Detects collections (caches, queues, lists) that grow without bounds and lack eviction policies. Unbounded collections can consume all available memory over time, leading to OutOfMemoryError. Implement size limits, TTL-based eviction, or use bounded data structures.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["performance", "memory", "memory-leak", "cache"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "public class UserCache {\n    private final Map<String, User> cache = new HashMap<>();\n    \n    public void cacheUser(String id, User user) {\n        cache.put(id, user); // grows forever\n    }\n}",
+        "after": "public class UserCache {\n    private final Map<String, User> cache = new LinkedHashMap<>(100, 0.75f, true) {\n        @Override\n        protected boolean removeEldestEntry(Map.Entry eldest) {\n            return size() > MAX_CACHE_SIZE;\n        }\n    };\n    // Or use Guava/Caffeine cache with eviction policy\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

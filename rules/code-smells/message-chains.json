@@ -1,0 +1,38 @@
+{
+  "key": "message-chains",
+  "name": "Message Chains (Law of Demeter Violation)",
+  "description": "Detects long chains of method calls like a.getB().getC().getD().doSomething(). Message chains violate the Law of Demeter, creating tight coupling between classes and making code fragile to changes in intermediate objects. Use delegation or provide direct methods.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "coupling", "law-of-demeter"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "String cityName = order.getCustomer().getAddress().getCity().getName();",
+        "after": "// Option 1: Delegate method\nString cityName = order.getDeliveryCityName();\n\n// Option 2: Pass required data directly\npublic void processOrder(Order order, String cityName) { }"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  },
+  "params": [
+    {
+      "key": "maxChainLength",
+      "name": "Maximum Chain Length",
+      "description": "Maximum allowed method chain length before triggering the rule",
+      "defaultValue": "3",
+      "type": "INTEGER"
+    }
+  ]
+}

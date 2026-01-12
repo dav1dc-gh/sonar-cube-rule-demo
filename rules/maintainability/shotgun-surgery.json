@@ -1,0 +1,29 @@
+{
+  "key": "shotgun-surgery",
+  "name": "Shotgun Surgery",
+  "description": "Detects changes that require many small modifications across multiple classes or modules. This indicates poor cohesion and scattered responsibilities. When a single change requires editing many files, consolidate related logic into a single class or module.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "design", "cohesion", "refactoring"],
+  "remediation": {
+    "constantCost": "60min",
+    "examples": [
+      {
+        "before": "// Adding a new user field requires changes in many places:\n// User.java - add field\n// UserDTO.java - add field\n// UserMapper.java - add mapping\n// UserValidator.java - add validation\n// UserRepository.java - update query\n// UserController.java - update endpoint\n// user-form.html - add input field",
+        "after": "// Consolidate related logic:\n// Use annotations/conventions for automatic DTO mapping\n// Use Bean Validation annotations on entity\n// Consider CQRS or domain events for complex cases\n\n@Entity\npublic class User {\n    @NotBlank\n    @Column(name = \"new_field\")\n    private String newField; // Single place for field + validation\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "LINEAR",
+    "coefficient": "20min"
+  }
+}

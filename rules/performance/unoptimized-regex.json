@@ -1,0 +1,29 @@
+{
+  "key": "unoptimized-regex",
+  "name": "Unoptimized Regular Expression",
+  "description": "Detects regular expressions that are compiled repeatedly instead of being cached, or patterns susceptible to catastrophic backtracking (ReDoS). Compile patterns once and reuse them. Avoid nested quantifiers and overlapping alternations that cause exponential time complexity.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["performance", "regex", "redos", "security"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public boolean isValidEmail(String email) {\n    // Compiled on every call\n    return email.matches(\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\");\n}",
+        "after": "private static final Pattern EMAIL_PATTERN = \n    Pattern.compile(\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\");\n\npublic boolean isValidEmail(String email) {\n    return EMAIL_PATTERN.matcher(email).matches();\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}
