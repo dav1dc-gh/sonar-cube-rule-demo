@@ -1,0 +1,29 @@
+{
+  "key": "refused-bequest",
+  "name": "Refused Bequest",
+  "description": "Detects subclasses that override inherited methods to do nothing or throw exceptions, or don't use most inherited functionality. This indicates improper use of inheritance and violates the Liskov Substitution Principle. Consider using composition instead of inheritance.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "solid", "inheritance", "lsp"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "public class Square extends Rectangle {\n    @Override\n    public void setWidth(int width) {\n        super.setWidth(width);\n        super.setHeight(width); // breaks LSP\n    }\n    @Override\n    public void setHeight(int height) {\n        throw new UnsupportedOperationException(); // refused bequest\n    }\n}",
+        "after": "public interface Shape {\n    int getArea();\n}\n\npublic class Square implements Shape {\n    private int side;\n    public int getArea() { return side * side; }\n}\n\npublic class Rectangle implements Shape {\n    private int width, height;\n    public int getArea() { return width * height; }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

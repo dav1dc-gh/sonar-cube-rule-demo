@@ -1,0 +1,29 @@
+{
+  "key": "open-redirect",
+  "name": "Open Redirect Vulnerability",
+  "description": "Detects when user-controlled input is used to construct redirect URLs without proper validation. Open redirects can be exploited by attackers to redirect users to malicious websites, facilitating phishing attacks and credential theft. Always validate and whitelist redirect destinations.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "owasp-top-10", "injection", "phishing"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "String redirectUrl = request.getParameter(\"redirect\");\nresponse.sendRedirect(redirectUrl);",
+        "after": "String redirectUrl = request.getParameter(\"redirect\");\nif (isValidRedirectUrl(redirectUrl, ALLOWED_DOMAINS)) {\n    response.sendRedirect(redirectUrl);\n} else {\n    response.sendRedirect(\"/default\");\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

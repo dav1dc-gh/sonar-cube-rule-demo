@@ -1,0 +1,29 @@
+{
+  "key": "ldap-injection",
+  "name": "LDAP Injection Vulnerability",
+  "description": "Detects when user input is concatenated directly into LDAP queries without proper sanitization. Attackers can manipulate LDAP queries to bypass authentication, access unauthorized data, or modify directory entries. Always use parameterized LDAP queries or properly escape user input.",
+  "severity": "BLOCKER",
+  "type": "VULNERABILITY",
+  "tags": ["security", "owasp-top-10", "injection", "ldap", "authentication"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "String filter = \"(&(uid=\" + username + \")(userPassword=\" + password + \"))\";\nNamingEnumeration<SearchResult> results = ctx.search(baseDN, filter, controls);",
+        "after": "String filter = \"(&(uid={0})(userPassword={1}))\";\nObject[] filterArgs = {sanitizeLdapInput(username), sanitizeLdapInput(password)};\nNamingEnumeration<SearchResult> results = ctx.search(baseDN, filter, filterArgs, controls);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "BLOCKER",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

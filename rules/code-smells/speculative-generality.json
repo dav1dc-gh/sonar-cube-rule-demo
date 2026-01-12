@@ -1,0 +1,29 @@
+{
+  "key": "speculative-generality",
+  "name": "Speculative Generality",
+  "description": "Detects unused abstractions, interfaces, or parameters created for hypothetical future requirements. This includes abstract classes with only one subclass, interfaces implemented by only one class, and unused method parameters. Remove unnecessary abstractions and add them when actually needed.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "design", "yagni", "refactoring"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "public interface DataProcessor {\n    void process(Data data);\n}\n\npublic class XmlDataProcessor implements DataProcessor {\n    // Only implementation, interface never used polymorphically\n}",
+        "after": "public class XmlDataProcessor {\n    public void process(Data data) {\n        // Direct implementation, add interface when second implementation is needed\n    }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

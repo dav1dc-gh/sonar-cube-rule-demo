@@ -1,0 +1,29 @@
+{
+  "key": "excessive-comments",
+  "name": "Excessive or Redundant Comments",
+  "description": "Detects code with excessive comments that explain what the code does rather than why. Comments that restate obvious code indicate unclear naming or design. Prefer self-documenting code with clear names. Reserve comments for explaining business rules, non-obvious decisions, or warnings.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "documentation", "readability", "clean-code"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "// Loop through users\nfor (int i = 0; i < users.size(); i++) {\n    User user = users.get(i); // Get user at index i\n    // Check if user is active\n    if (user.isActive()) {\n        // Add user to result list\n        result.add(user);\n    }\n}",
+        "after": "List<User> activeUsers = users.stream()\n    .filter(User::isActive)\n    .collect(Collectors.toList());\n\n// Use comments for non-obvious business logic:\n// Users inactive for >90 days are excluded per GDPR compliance requirements"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "circular-dependencies",
+  "name": "Circular Dependencies Between Modules",
+  "description": "Detects circular dependencies between packages, modules, or classes where A depends on B and B depends on A (directly or transitively). Circular dependencies make code harder to understand, test, and refactor. Break cycles by introducing interfaces, extracting common code, or using dependency injection.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "design", "architecture", "coupling"],
+  "remediation": {
+    "constantCost": "60min",
+    "examples": [
+      {
+        "before": "// OrderService.java\npublic class OrderService {\n    private CustomerService customerService; // depends on CustomerService\n}\n\n// CustomerService.java\npublic class CustomerService {\n    private OrderService orderService; // circular: depends on OrderService\n}",
+        "after": "// Extract interface to break cycle\npublic interface OrderProvider {\n    List<Order> getOrdersForCustomer(String customerId);\n}\n\npublic class OrderService implements OrderProvider { }\n\npublic class CustomerService {\n    private OrderProvider orderProvider; // depends on interface, not concrete class\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "60min"
+  }
+}

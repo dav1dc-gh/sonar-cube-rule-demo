@@ -1,0 +1,29 @@
+{
+  "key": "insecure-cookie",
+  "name": "Insecure Cookie Configuration",
+  "description": "Detects cookies created without essential security flags (Secure, HttpOnly, SameSite). Missing Secure flag allows cookies to be transmitted over unencrypted connections. Missing HttpOnly flag exposes cookies to XSS attacks. Missing SameSite flag enables CSRF attacks.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "owasp-top-10", "cookies", "session-management"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "Cookie sessionCookie = new Cookie(\"sessionId\", sessionId);\nresponse.addCookie(sessionCookie);",
+        "after": "Cookie sessionCookie = new Cookie(\"sessionId\", sessionId);\nsessionCookie.setSecure(true);\nsessionCookie.setHttpOnly(true);\nsessionCookie.setAttribute(\"SameSite\", \"Strict\");\nresponse.addCookie(sessionCookie);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

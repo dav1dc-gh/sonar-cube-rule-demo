@@ -1,0 +1,29 @@
+{
+  "key": "xml-external-entity",
+  "name": "XML External Entity (XXE) Injection",
+  "description": "Detects XML parsers configured to process external entities, which can lead to XXE attacks. Attackers can exploit this to read local files, perform server-side request forgery, or cause denial of service. Always disable external entity processing in XML parsers.",
+  "severity": "BLOCKER",
+  "type": "VULNERABILITY",
+  "tags": ["security", "owasp-top-10", "injection", "xxe", "xml"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();\nDocumentBuilder builder = factory.newDocumentBuilder();\nDocument doc = builder.parse(xmlInput);",
+        "after": "DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();\nfactory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true);\nfactory.setFeature(\"http://xml.org/sax/features/external-general-entities\", false);\nfactory.setFeature(\"http://xml.org/sax/features/external-parameter-entities\", false);\nDocumentBuilder builder = factory.newDocumentBuilder();\nDocument doc = builder.parse(xmlInput);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "BLOCKER",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}
