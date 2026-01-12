@@ -6,7 +6,7 @@
   "type": "CODE_SMELL",
   "tags": ["maintainability", "readability", "method-length"],
   "remediation": {
-    "constantCost": "10min",
+    "constantCost": "2min",
     "examples": [
       {
         "before": "// Method with 200+ lines of code",
