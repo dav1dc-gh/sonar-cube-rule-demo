@@ -1,0 +1,39 @@
+{
+  "key": "long-methods",
+  "name": "Method Length Limit",
+  "description": "Detects methods or functions that exceed a reasonable length threshold, making them harder to understand and maintain. Long methods should be refactored into smaller, focused units.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "readability", "method-length"],
+  "remediation": {
+    "constantCost": "2min",
+    "examples": [
+      {
+        "before": "// Method with 200+ lines of code",
+        "after": "// Refactor into multiple smaller methods, each with a single responsibility"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "LINEAR",
+    "coefficient": "2min",
+    "offset": "0min"
+  },
+  "params": [
+    {
+      "key": "max",
+      "name": "Maximum Lines",
+      "description": "Maximum allowed lines of code per method",
+      "defaultValue": "100",
+      "type": "INTEGER"
+    }
+  ]
+}

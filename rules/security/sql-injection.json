@@ -1,0 +1,29 @@
+{
+  "key": "sql-injection",
+  "name": "SQL Injection Prevention",
+  "description": "Detects potential SQL injection vulnerabilities where user input is directly concatenated into SQL queries without proper sanitization or parameterization.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "sql", "injection", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "String query = \"SELECT * FROM users WHERE id = \" + userId;",
+        "after": "PreparedStatement stmt = connection.prepareStatement(\"SELECT * FROM users WHERE id = ?\");\nstmt.setString(1, userId);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

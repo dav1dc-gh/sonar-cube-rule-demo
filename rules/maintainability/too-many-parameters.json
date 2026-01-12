@@ -1,0 +1,38 @@
+{
+  "key": "too-many-parameters",
+  "name": "Too Many Method Parameters",
+  "description": "Detects methods or functions with too many parameters, which makes the code harder to understand and use. Consider using parameter objects or builder patterns.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "readability", "parameters", "design"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "function createUser(name, email, age, address, phone, company, role, status, preferences) { ... }",
+        "after": "function createUser(userConfig) {\n  const { name, email, age, address, phone, company, role, status, preferences } = userConfig;\n  ...\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  },
+  "params": [
+    {
+      "key": "max",
+      "name": "Maximum Parameters",
+      "description": "Maximum allowed number of parameters",
+      "defaultValue": "7",
+      "type": "INTEGER"
+    }
+  ]
+}

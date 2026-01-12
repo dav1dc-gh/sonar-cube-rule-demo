@@ -1,0 +1,29 @@
+{
+  "key": "magic-numbers",
+  "name": "Avoid Magic Numbers",
+  "description": "Detects the use of magic numbers (unnamed numerical constants) in code, which reduces readability and maintainability. Numbers should be replaced with named constants.",
+  "severity": "MINOR",
+  "type": "CODE_SMELL",
+  "tags": ["code-smell", "readability", "maintainability"],
+  "remediation": {
+    "constantCost": "5min",
+    "examples": [
+      {
+        "before": "if (age > 18) { ... }",
+        "after": "const MINIMUM_AGE = 18;\nif (age > MINIMUM_AGE) { ... }"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "LOW"
+    }
+  ],
+  "defaultSeverity": "MINOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "5min"
+  }
+}

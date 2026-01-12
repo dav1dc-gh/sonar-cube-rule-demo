@@ -1,0 +1,29 @@
+{
+  "key": "memory-leaks",
+  "name": "Potential Memory Leak Detection",
+  "description": "Identifies patterns that may lead to memory leaks such as unclosed resources, event listener accumulation, or references that prevent garbage collection.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["performance", "memory", "resource-management"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "FileInputStream fis = new FileInputStream(file);\n// No try-finally or close() call",
+        "after": "try (FileInputStream fis = new FileInputStream(file)) {\n  // Use the stream\n} // Automatically closed"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}
