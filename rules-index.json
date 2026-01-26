@@ -1,0 +1,824 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-01-12T20:26:37Z",
+  "categories": {
+    "code-smells": {
+      "description": "Code quality and design issue rules",
+      "ruleCount": 13
+    },
+    "maintainability": {
+      "description": "Code maintainability rules",
+      "ruleCount": 12
+    },
+    "performance": {
+      "description": "Performance optimization rules",
+      "ruleCount": 12
+    },
+    "security": {
+      "description": "Security vulnerability detection rules",
+      "ruleCount": 15
+    }
+  },
+  "rules": [
+    {
+      "key": "complex-methods",
+      "name": "High Cyclomatic Complexity",
+      "category": "code-smells",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "complexity",
+        "maintainability",
+        "testing"
+      ],
+      "file": "rules/code-smells/complex-methods.json"
+    },
+    {
+      "key": "data-clumps",
+      "name": "Data Clumps",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "refactoring",
+        "cohesion"
+      ],
+      "file": "rules/code-smells/data-clumps.json"
+    },
+    {
+      "key": "dead-code",
+      "name": "Dead Code Detection",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "unused",
+        "cleanup",
+        "maintainability"
+      ],
+      "file": "rules/code-smells/dead-code.json"
+    },
+    {
+      "key": "duplicate-code",
+      "name": "Duplicate Code Blocks",
+      "category": "code-smells",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "duplication",
+        "maintainability",
+        "dry-principle"
+      ],
+      "file": "rules/code-smells/duplicate-code.json"
+    },
+    {
+      "key": "empty-catch-block",
+      "name": "Empty Catch Block",
+      "category": "code-smells",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "error-handling",
+        "exceptions",
+        "debugging"
+      ],
+      "file": "rules/code-smells/empty-catch-block.json"
+    },
+    {
+      "key": "feature-envy",
+      "name": "Feature Envy",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "refactoring",
+        "oop"
+      ],
+      "file": "rules/code-smells/feature-envy.json"
+    },
+    {
+      "key": "god-class",
+      "name": "God Class Detection",
+      "category": "code-smells",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "solid",
+        "maintainability"
+      ],
+      "file": "rules/code-smells/god-class.json"
+    },
+    {
+      "key": "long-parameter-list",
+      "name": "Long Parameter List",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "refactoring",
+        "readability"
+      ],
+      "file": "rules/code-smells/long-parameter-list.json"
+    },
+    {
+      "key": "magic-numbers",
+      "name": "Avoid Magic Numbers",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "readability",
+        "maintainability"
+      ],
+      "file": "rules/code-smells/magic-numbers.json"
+    },
+    {
+      "key": "message-chains",
+      "name": "Message Chains (Law of Demeter Violation)",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "coupling",
+        "law-of-demeter"
+      ],
+      "file": "rules/code-smells/message-chains.json"
+    },
+    {
+      "key": "primitive-obsession",
+      "name": "Primitive Obsession",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "domain-driven-design",
+        "refactoring"
+      ],
+      "file": "rules/code-smells/primitive-obsession.json"
+    },
+    {
+      "key": "refused-bequest",
+      "name": "Refused Bequest",
+      "category": "code-smells",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "solid",
+        "inheritance",
+        "lsp"
+      ],
+      "file": "rules/code-smells/refused-bequest.json"
+    },
+    {
+      "key": "speculative-generality",
+      "name": "Speculative Generality",
+      "category": "code-smells",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "code-smell",
+        "design",
+        "yagni",
+        "refactoring"
+      ],
+      "file": "rules/code-smells/speculative-generality.json"
+    },
+    {
+      "key": "boolean-blindness",
+      "name": "Boolean Blindness",
+      "category": "maintainability",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "readability",
+        "api-design",
+        "clean-code"
+      ],
+      "file": "rules/maintainability/boolean-blindness.json"
+    },
+    {
+      "key": "circular-dependencies",
+      "name": "Circular Dependencies Between Modules",
+      "category": "maintainability",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "design",
+        "architecture",
+        "coupling"
+      ],
+      "file": "rules/maintainability/circular-dependencies.json"
+    },
+    {
+      "key": "deep-nesting",
+      "name": "Deeply Nested Code",
+      "category": "maintainability",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "complexity",
+        "readability",
+        "refactoring"
+      ],
+      "file": "rules/maintainability/deep-nesting.json"
+    },
+    {
+      "key": "excessive-comments",
+      "name": "Excessive or Redundant Comments",
+      "category": "maintainability",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "documentation",
+        "readability",
+        "clean-code"
+      ],
+      "file": "rules/maintainability/excessive-comments.json"
+    },
+    {
+      "key": "hardcoded-urls",
+      "name": "Hardcoded URLs and Endpoints",
+      "category": "maintainability",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "configuration",
+        "deployment",
+        "best-practices"
+      ],
+      "file": "rules/maintainability/hardcoded-urls.json"
+    },
+    {
+      "key": "hidden-dependencies",
+      "name": "Hidden Dependencies",
+      "category": "maintainability",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "design",
+        "testability",
+        "dependency-injection"
+      ],
+      "file": "rules/maintainability/hidden-dependencies.json"
+    },
+    {
+      "key": "inconsistent-naming",
+      "name": "Inconsistent Naming Convention",
+      "category": "maintainability",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "naming",
+        "conventions",
+        "readability"
+      ],
+      "file": "rules/maintainability/inconsistent-naming.json"
+    },
+    {
+      "key": "long-methods",
+      "name": "Method Length Limit",
+      "category": "maintainability",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "readability",
+        "method-length"
+      ],
+      "file": "rules/maintainability/long-methods.json"
+    },
+    {
+      "key": "missing-javadoc",
+      "name": "Missing Documentation",
+      "category": "maintainability",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "documentation",
+        "javadoc",
+        "readability"
+      ],
+      "file": "rules/maintainability/missing-javadoc.json"
+    },
+    {
+      "key": "missing-null-check",
+      "name": "Missing Null Check",
+      "category": "maintainability",
+      "severity": "MAJOR",
+      "type": "BUG",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "null-safety",
+        "defensive-programming",
+        "reliability"
+      ],
+      "file": "rules/maintainability/missing-null-check.json"
+    },
+    {
+      "key": "shotgun-surgery",
+      "name": "Shotgun Surgery",
+      "category": "maintainability",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "design",
+        "cohesion",
+        "refactoring"
+      ],
+      "file": "rules/maintainability/shotgun-surgery.json"
+    },
+    {
+      "key": "too-many-parameters",
+      "name": "Too Many Method Parameters",
+      "category": "maintainability",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "maintainability",
+        "readability",
+        "parameters",
+        "design"
+      ],
+      "file": "rules/maintainability/too-many-parameters.json"
+    },
+    {
+      "key": "connection-pool-exhaustion",
+      "name": "Connection Pool Exhaustion Risk",
+      "category": "performance",
+      "severity": "CRITICAL",
+      "type": "BUG",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "database",
+        "resource-leak",
+        "connection-pool"
+      ],
+      "file": "rules/performance/connection-pool-exhaustion.json"
+    },
+    {
+      "key": "excessive-object-creation",
+      "name": "Excessive Object Creation in Hot Path",
+      "category": "performance",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "memory",
+        "gc",
+        "optimization"
+      ],
+      "file": "rules/performance/excessive-object-creation.json"
+    },
+    {
+      "key": "inefficient-collection-usage",
+      "name": "Inefficient Collection Usage",
+      "category": "performance",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "collections",
+        "data-structures",
+        "optimization"
+      ],
+      "file": "rules/performance/inefficient-collection-usage.json"
+    },
+    {
+      "key": "inefficient-loops",
+      "name": "Inefficient Loop Operations",
+      "category": "performance",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "optimization",
+        "loops"
+      ],
+      "file": "rules/performance/inefficient-loops.json"
+    },
+    {
+      "key": "memory-leaks",
+      "name": "Potential Memory Leak Detection",
+      "category": "performance",
+      "severity": "CRITICAL",
+      "type": "BUG",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "memory",
+        "resource-management"
+      ],
+      "file": "rules/performance/memory-leaks.json"
+    },
+    {
+      "key": "missing-lazy-initialization",
+      "name": "Missing Lazy Initialization",
+      "category": "performance",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "memory",
+        "initialization",
+        "optimization"
+      ],
+      "file": "rules/performance/missing-lazy-initialization.json"
+    },
+    {
+      "key": "n-plus-one-query",
+      "name": "N+1 Query Problem",
+      "category": "performance",
+      "severity": "CRITICAL",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "database",
+        "orm",
+        "optimization"
+      ],
+      "file": "rules/performance/n-plus-one-query.json"
+    },
+    {
+      "key": "string-concatenation-in-loop",
+      "name": "String Concatenation in Loop",
+      "category": "performance",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "memory",
+        "strings",
+        "optimization"
+      ],
+      "file": "rules/performance/string-concatenation-in-loop.json"
+    },
+    {
+      "key": "synchronous-io-in-async",
+      "name": "Synchronous I/O in Async Context",
+      "category": "performance",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "async",
+        "reactive",
+        "concurrency"
+      ],
+      "file": "rules/performance/synchronous-io-in-async.json"
+    },
+    {
+      "key": "unbounded-collection-growth",
+      "name": "Unbounded Collection Growth",
+      "category": "performance",
+      "severity": "CRITICAL",
+      "type": "BUG",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "memory",
+        "memory-leak",
+        "cache"
+      ],
+      "file": "rules/performance/unbounded-collection-growth.json"
+    },
+    {
+      "key": "unnecessary-boxing",
+      "name": "Unnecessary Boxing/Unboxing",
+      "category": "performance",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "memory",
+        "primitives",
+        "optimization"
+      ],
+      "file": "rules/performance/unnecessary-boxing.json"
+    },
+    {
+      "key": "unoptimized-regex",
+      "name": "Unoptimized Regular Expression",
+      "category": "performance",
+      "severity": "CRITICAL",
+      "type": "BUG",
+      "status": "READY",
+      "tags": [
+        "performance",
+        "regex",
+        "redos",
+        "security"
+      ],
+      "file": "rules/performance/unoptimized-regex.json"
+    },
+    {
+      "key": "command-injection",
+      "name": "Command Injection Vulnerability",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "injection",
+        "owasp-top-10",
+        "command-execution"
+      ],
+      "file": "rules/security/command-injection.json"
+    },
+    {
+      "key": "csrf-vulnerability",
+      "name": "Cross-Site Request Forgery (CSRF)",
+      "category": "security",
+      "severity": "MAJOR",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "csrf",
+        "owasp-top-10",
+        "web"
+      ],
+      "file": "rules/security/csrf-vulnerability.json"
+    },
+    {
+      "key": "hardcoded-credentials",
+      "name": "Hardcoded Credentials Detection",
+      "category": "security",
+      "severity": "BLOCKER",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "credentials",
+        "secrets",
+        "owasp-top-10"
+      ],
+      "file": "rules/security/hardcoded-credentials.json"
+    },
+    {
+      "key": "insecure-cookie",
+      "name": "Insecure Cookie Configuration",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "owasp-top-10",
+        "cookies",
+        "session-management"
+      ],
+      "file": "rules/security/insecure-cookie.json"
+    },
+    {
+      "key": "insecure-deserialization",
+      "name": "Insecure Deserialization",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "deserialization",
+        "owasp-top-10",
+        "rce"
+      ],
+      "file": "rules/security/insecure-deserialization.json"
+    },
+    {
+      "key": "insecure-random",
+      "name": "Insecure Random Number Generator",
+      "category": "security",
+      "severity": "MAJOR",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "random",
+        "cryptography",
+        "tokens"
+      ],
+      "file": "rules/security/insecure-random.json"
+    },
+    {
+      "key": "ldap-injection",
+      "name": "LDAP Injection Vulnerability",
+      "category": "security",
+      "severity": "BLOCKER",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "owasp-top-10",
+        "injection",
+        "ldap",
+        "authentication"
+      ],
+      "file": "rules/security/ldap-injection.json"
+    },
+    {
+      "key": "open-redirect",
+      "name": "Open Redirect Vulnerability",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "owasp-top-10",
+        "injection",
+        "phishing"
+      ],
+      "file": "rules/security/open-redirect.json"
+    },
+    {
+      "key": "path-traversal",
+      "name": "Path Traversal Vulnerability",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "path-traversal",
+        "owasp-top-10",
+        "file-access"
+      ],
+      "file": "rules/security/path-traversal.json"
+    },
+    {
+      "key": "sensitive-data-exposure",
+      "name": "Sensitive Data Exposure in Logs",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "logging",
+        "pii",
+        "gdpr",
+        "owasp-top-10"
+      ],
+      "file": "rules/security/sensitive-data-exposure.json"
+    },
+    {
+      "key": "server-side-request-forgery",
+      "name": "Server-Side Request Forgery (SSRF)",
+      "category": "security",
+      "severity": "BLOCKER",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "owasp-top-10",
+        "ssrf",
+        "network"
+      ],
+      "file": "rules/security/server-side-request-forgery.json"
+    },
+    {
+      "key": "sql-injection",
+      "name": "SQL Injection Prevention",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "sql",
+        "injection",
+        "owasp-top-10"
+      ],
+      "file": "rules/security/sql-injection.json"
+    },
+    {
+      "key": "weak-cryptography",
+      "name": "Weak Cryptographic Algorithm",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "cryptography",
+        "encryption",
+        "owasp-top-10"
+      ],
+      "file": "rules/security/weak-cryptography.json"
+    },
+    {
+      "key": "xml-external-entity",
+      "name": "XML External Entity (XXE) Injection",
+      "category": "security",
+      "severity": "BLOCKER",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "owasp-top-10",
+        "injection",
+        "xxe",
+        "xml"
+      ],
+      "file": "rules/security/xml-external-entity.json"
+    },
+    {
+      "key": "xss-vulnerability",
+      "name": "Cross-Site Scripting (XSS) Prevention",
+      "category": "security",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "status": "READY",
+      "tags": [
+        "security",
+        "xss",
+        "cross-site-scripting",
+        "owasp-top-10"
+      ],
+      "file": "rules/security/xss-vulnerability.json"
+    }
+  ],
+  "summary": {
+    "totalRules": 52,
+    "byCategory": {
+      "code-smells": 13,
+      "maintainability": 12,
+      "performance": 12,
+      "security": 15
+    },
+    "bySeverity": {
+      "BLOCKER": 4,
+      "CRITICAL": 14,
+      "MAJOR": 19,
+      "MINOR": 15
+    },
+    "byType": {
+      "BUG": 5,
+      "CODE_SMELL": 32,
+      "VULNERABILITY": 15
+    }
+  }
+}

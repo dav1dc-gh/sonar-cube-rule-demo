@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/sonarqube-rule.schema.json",
+  "title": "SonarQube Rule Definition",
+  "description": "Schema for validating SonarQube custom rule JSON files",
+  "type": "object",
+  "required": ["key", "name", "description", "severity", "type", "tags", "status"],
+  "properties": {
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$",
+      "description": "Unique identifier for the rule (lowercase, hyphenated)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200,
+      "description": "Human-readable display name for the rule"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Detailed explanation of what the rule detects and why it matters"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "INFO"],
+      "description": "Severity level of issues detected by this rule"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["VULNERABILITY", "BUG", "CODE_SMELL"],
+      "description": "Classification of issues detected by this rule"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Categorization labels for the rule"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["READY", "BETA", "DEPRECATED"],
+      "description": "Current status of the rule"
+    },
+    "defaultSeverity": {
+      "type": "string",
+      "enum": ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "INFO"],
+      "description": "Default severity (should match severity)"
+    },
+    "remediation": {
+      "type": "object",
+      "properties": {
+        "constantCost": {
+          "type": "string",
+          "pattern": "^[0-9]+(min|h|d)$",
+          "description": "Estimated time to fix (e.g., '30min', '2h', '1d')"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["before", "after"],
+            "properties": {
+              "before": {
+                "type": "string",
+                "description": "Code example showing the problem"
+              },
+              "after": {
+                "type": "string",
+                "description": "Code example showing the fix"
+              }
+            }
+          },
+          "description": "Before/after code examples"
+        }
+      },
+      "description": "Guidance for fixing issues"
+    },
+    "impacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["softwareQuality", "severity"],
+        "properties": {
+          "softwareQuality": {
+            "type": "string",
+            "enum": ["SECURITY", "RELIABILITY", "MAINTAINABILITY"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["HIGH", "MEDIUM", "LOW"]
+          }
+        }
+      },
+      "description": "Impact on software quality attributes"
+    },
+    "debt": {
+      "type": "object",
+      "required": ["function"],
+      "properties": {
+        "function": {
+          "type": "string",
+          "enum": ["CONSTANT_ISSUE", "LINEAR", "LINEAR_OFFSET"]
+        },
+        "coefficient": {
+          "type": "string",
+          "pattern": "^[0-9]+(min|h|d)$"
+        },
+        "offset": {
+          "type": "string",
+          "pattern": "^[0-9]+(min|h|d)$"
+        }
+      },
+      "description": "Technical debt estimation"
+    },
+    "params": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "name", "description", "defaultValue", "type"],
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "defaultValue": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["INTEGER", "STRING", "BOOLEAN", "FLOAT"]
+          }
+        }
+      },
+      "description": "Configurable parameters for the rule"
+    }
+  },
+  "additionalProperties": false
+}
