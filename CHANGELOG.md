@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- JSON Schema for rule validation (`schemas/rule-schema.json`)
-- Validation script (`scripts/validate-rules.sh`)
-- Index generation script (`scripts/generate-index.sh`)
-- GitHub Actions workflow for CI validation
-- This CHANGELOG file
+- JSON Schema for rule validation (`schemas/rule-schema.json`) - validates all rule file structure
+- Validation script (`scripts/validate-rules.sh`) - comprehensive rule validation with detailed reporting
+- Index generation script (`scripts/generate-index.sh`) - auto-generates rules-index.json
+- GitHub Actions workflow for CI validation (`.github/workflows/validate-rules.yml`)
+- Pull request template (`.github/PULL_REQUEST_TEMPLATE.md`)
+- Issue templates for new rules and bug reports (`.github/ISSUE_TEMPLATE/`)
+- VS Code workspace settings for JSON schema integration (`.vscode/settings.json`)
+- VS Code recommended extensions (`.vscode/extensions.json`)
+- Package.json with npm scripts for validation (`npm run validate`)
+- Exports directory with documentation for SonarQube integration
 
 ## [1.0.0] - 2026-01-12
 

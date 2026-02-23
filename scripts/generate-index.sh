@@ -1,127 +1,173 @@
-#!/usr/bin/env bash
-# ============================================================================
+#!/bin/bash
+# =============================================================================
 # SonarQube Rules Index Generator
-# ============================================================================
-# Generates a rules-index.json file containing metadata about all rules.
-# This index can be used for:
-#   - Quick lookup of available rules
-#   - Importing rules into SonarQube
-#   - Generating documentation
-#   - CI/CD integration
+# =============================================================================
+# Generates the rules-index.json file from all rule files in the repository.
 #
-# Usage: ./scripts/generate-index.sh
-# Output: rules-index.json in project root
-# ============================================================================
+# Usage: ./scripts/generate-index.sh [options]
+# Options:
+#   -o, --output FILE    Output file (default: rules-index.json)
+#   -p, --pretty         Pretty print output (default: true)
+#   -h, --help           Show this help message
+# =============================================================================
 
+set -e
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+# Script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-RULES_DIR="$PROJECT_ROOT/rules"
-OUTPUT_FILE="$PROJECT_ROOT/rules-index.json"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+RULES_DIR="$ROOT_DIR/rules"
+OUTPUT_FILE="$ROOT_DIR/rules-index.json"
+PRETTY=true
 
-echo "Generating rules index..."
-
-TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-TOTAL_RULES=0
-
-# Build the rules array
-RULES_JSON="[]"
-
-for category_dir in "$RULES_DIR"/*/; do
-    category=$(basename "$category_dir")
-    
-    for rule_file in "$category_dir"*.json; do
-        [ -f "$rule_file" ] || continue
-        
-        # Extract rule metadata
-        key=$(jq -r '.key' "$rule_file")
-        name=$(jq -r '.name' "$rule_file")
-        severity=$(jq -r '.severity' "$rule_file")
-        type=$(jq -r '.type' "$rule_file")
-        status=$(jq -r '.status' "$rule_file")
-        tags=$(jq -c '.tags' "$rule_file")
-        
-        # Build rule entry
-        rule_entry=$(jq -n \
-            --arg key "$key" \
-            --arg name "$name" \
-            --arg category "$category" \
-            --arg severity "$severity" \
-            --arg type "$type" \
-            --arg status "$status" \
-            --argjson tags "$tags" \
-            --arg file "rules/$category/$(basename "$rule_file")" \
-            '{
-                key: $key,
-                name: $name,
-                category: $category,
-                severity: $severity,
-                type: $type,
-                status: $status,
-                tags: $tags,
-                file: $file
-            }')
-        
-        RULES_JSON=$(echo "$RULES_JSON" | jq --argjson rule "$rule_entry" '. += [$rule]')
-        TOTAL_RULES=$((TOTAL_RULES + 1))
-    done
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -o|--output)
+            OUTPUT_FILE="$2"
+            shift 2
+            ;;
+        -p|--pretty)
+            PRETTY=true
+            shift
+            ;;
+        --no-pretty)
+            PRETTY=false
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: $0 [options]"
+            echo "Options:"
+            echo "  -o, --output FILE    Output file (default: rules-index.json)"
+            echo "  -p, --pretty         Pretty print output (default: true)"
+            echo "  -h, --help           Show this help message"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+    esac
 done
 
-# Generate category counts from the rules array
-BY_CATEGORY=$(echo "$RULES_JSON" | jq 'group_by(.category) | map({key: .[0].category, value: length}) | from_entries')
-BY_SEVERITY=$(echo "$RULES_JSON" | jq 'group_by(.severity) | map({key: .[0].severity, value: length}) | from_entries')
-BY_TYPE=$(echo "$RULES_JSON" | jq 'group_by(.type) | map({key: .[0].type, value: length}) | from_entries')
+log_info() {
+    echo -e "${BLUE}ℹ${NC} $1"
+}
 
-# Build category metadata
-CATEGORIES_JSON=$(echo "$BY_CATEGORY" | jq '
-    to_entries | map({
-        key: .key,
-        value: {
-            description: (
-                if .key == "security" then "Security vulnerability detection rules"
-                elif .key == "code-smells" then "Code quality and design issue rules"
-                elif .key == "performance" then "Performance optimization rules"
-                elif .key == "maintainability" then "Code maintainability rules"
-                else "Custom rules"
-                end
-            ),
-            ruleCount: .value
-        }
-    }) | from_entries
-')
+log_success() {
+    echo -e "${GREEN}✓${NC} $1"
+}
 
-# Assemble final JSON
-jq -n \
-    --arg version "1.0.0" \
+# Check prerequisites
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is required but not installed."
+    exit 1
+fi
+
+log_info "Generating rules index..."
+
+# Build categories object
+CATEGORIES='{}'
+for category_dir in "$RULES_DIR"/*/; do
+    if [ -d "$category_dir" ]; then
+        category_name=$(basename "$category_dir")
+        rule_count=$(find "$category_dir" -name "*.json" | wc -l | tr -d ' ')
+        
+        # Generate description based on category name
+        case $category_name in
+            "security")
+                description="Security vulnerability detection rules"
+                ;;
+            "code-smells")
+                description="Code quality and design issue rules"
+                ;;
+            "performance")
+                description="Performance optimization rules"
+                ;;
+            "maintainability")
+                description="Code maintainability rules"
+                ;;
+            *)
+                description="$category_name rules"
+                ;;
+        esac
+        
+        CATEGORIES=$(echo "$CATEGORIES" | jq --arg name "$category_name" \
+            --arg desc "$description" \
+            --argjson count "$rule_count" \
+            '. + {($name): {"description": $desc, "ruleCount": $count}}')
+    fi
+done
+
+# Build rules array
+RULES='[]'
+for category_dir in "$RULES_DIR"/*/; do
+    if [ -d "$category_dir" ]; then
+        category_name=$(basename "$category_dir")
+        
+        for rule_file in "$category_dir"*.json; do
+            if [ -f "$rule_file" ]; then
+                relative_path="${rule_file#$ROOT_DIR/}"
+                
+                # Extract rule metadata
+                rule_entry=$(jq --arg category "$category_name" \
+                    --arg file "$relative_path" \
+                    '{
+                        key: .key,
+                        name: .name,
+                        category: $category,
+                        severity: .severity,
+                        type: .type,
+                        status: .status,
+                        tags: .tags,
+                        file: $file
+                    }' "$rule_file")
+                
+                RULES=$(echo "$RULES" | jq --argjson rule "$rule_entry" '. + [$rule]')
+            fi
+        done
+    fi
+done
+
+# Sort rules by category then by key
+RULES=$(echo "$RULES" | jq 'sort_by(.category, .key)')
+
+# Get version from existing index or use 1.0.0
+if [ -f "$OUTPUT_FILE" ]; then
+    VERSION=$(jq -r '.version // "1.0.0"' "$OUTPUT_FILE")
+else
+    VERSION="1.0.0"
+fi
+
+# Generate timestamp
+TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+# Build final index
+INDEX=$(jq -n \
+    --arg version "$VERSION" \
     --arg timestamp "$TIMESTAMP" \
-    --argjson categories "$CATEGORIES_JSON" \
-    --argjson rules "$RULES_JSON" \
-    --argjson total "$TOTAL_RULES" \
-    --argjson byCategory "$BY_CATEGORY" \
-    --argjson bySeverity "$BY_SEVERITY" \
-    --argjson byType "$BY_TYPE" \
+    --argjson categories "$CATEGORIES" \
+    --argjson rules "$RULES" \
     '{
         version: $version,
         generatedAt: $timestamp,
         categories: $categories,
-        rules: $rules,
-        summary: {
-            totalRules: $total,
-            byCategory: $byCategory,
-            bySeverity: $bySeverity,
-            byType: $byType
-        }
-    }' > "$OUTPUT_FILE"
+        rules: $rules
+    }')
 
-echo "Generated: $OUTPUT_FILE"
-echo ""
-echo "Summary:"
-echo "  Total rules: $TOTAL_RULES"
-echo ""
-echo "By Category:"
-echo "$BY_CATEGORY" | jq -r 'to_entries[] | "  - \(.key): \(.value)"'
-echo ""
-echo "By Severity:"
-echo "$BY_SEVERITY" | jq -r 'to_entries[] | "  - \(.key): \(.value)"'
-echo ""
-echo "By Type:"
-echo "$BY_TYPE" | jq -r 'to_entries[] | "  - \(.key): \(.value)"'
+# Output
+if $PRETTY; then
+    echo "$INDEX" | jq '.' > "$OUTPUT_FILE"
+else
+    echo "$INDEX" | jq -c '.' > "$OUTPUT_FILE"
+fi
+
+# Summary
+total_rules=$(echo "$RULES" | jq 'length')
+log_success "Generated index with $total_rules rules"
+log_success "Output written to: $OUTPUT_FILE"

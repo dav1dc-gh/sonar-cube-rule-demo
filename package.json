@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "sonarqube-rules-demo",
+  "version": "1.0.0",
+  "description": "SonarQube rule definitions for code quality, security, and maintainability",
+  "private": true,
+  "scripts": {
+    "validate": "./scripts/validate-rules.sh",
+    "validate:verbose": "./scripts/validate-rules.sh --verbose",
+    "generate-index": "./scripts/generate-index.sh",
+    "lint": "npm run validate && npm run check-json",
+    "check-json": "find rules -name '*.json' -exec jq empty {} \\;",
+    "schema-validate": "ajv validate -s schemas/rule-schema.json -d 'rules/*/*.json' --strict=false",
+    "precommit": "npm run lint"
+  },
+  "keywords": [
+    "sonarqube",
+    "code-quality",
+    "static-analysis",
+    "rules",
+    "security"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "ajv-cli": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/sonarqube-rules-demo.git"
+  }
+}

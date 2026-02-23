@@ -1,0 +1,22 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "rules/**/*.json"
+      ],
+      "url": "./schemas/rule-schema.json"
+    }
+  ],
+  "files.associations": {
+    "*.json": "json"
+  },
+  "editor.formatOnSave": true,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.tabSize": 2
+  },
+  "recommendations": [
+    "ms-vscode.vscode-json",
+    "redhat.vscode-yaml"
+  ]
+}

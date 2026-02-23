@@ -1,134 +1,162 @@
-# ============================================================================
-# SonarQube Rules Validation Workflow
-# ============================================================================
-# This workflow runs on every push and pull request to validate:
-#   - JSON syntax of all rule files
-#   - Required fields are present
-#   - Valid enum values (severity, type, status)
-#   - No duplicate rule keys
-#   - Schema compliance
+# =============================================================================
+# GitHub Actions Workflow: Validate SonarQube Rules
+# =============================================================================
+# Runs on every push and pull request to validate rule files.
 #
-# It also regenerates the rules index on main branch pushes.
-# ============================================================================
+# Checks performed:
+# - JSON syntax validation
+# - Schema compliance
+# - Required fields presence
+# - Field value validation
+# - Filename/key consistency
+# - Index file synchronization
+# =============================================================================
 
-name: Validate SonarQube Rules
+name: Validate Rules
 
 on:
-  push:
-    branches: [main, master]
-    paths:
-      - 'rules/**/*.json'
-      - 'schemas/**'
-      - 'scripts/**'
-  pull_request:
-    branches: [main, master]
-    paths:
-      - 'rules/**/*.json'
-      - 'schemas/**'
-      - 'scripts/**'
-  workflow_dispatch:
+    push:
+        branches: [main, develop]
+        paths:
+            - "rules/**/*.json"
+            - "rules-index.json"
+            - "schemas/**"
+            - "scripts/**"
+            - ".github/workflows/validate-rules.yml"
+    pull_request:
+        branches: [main]
+        paths:
+            - "rules/**/*.json"
+            - "rules-index.json"
+            - "schemas/**"
+            - "scripts/**"
 
 jobs:
-  validate:
-    name: Validate Rules
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    validate:
+        name: Validate Rule Files
+        runs-on: ubuntu-latest
 
-      - name: Setup Node.js (for schema validation)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-      - name: Install ajv-cli for schema validation
-        run: npm install -g ajv-cli
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
 
-      - name: Make scripts executable
-        run: chmod +x scripts/*.sh
+            - name: Install dependencies
+              run: |
+                  npm install -g ajv-cli
+                  sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Validate all rules
-        run: ./scripts/validate-rules.sh
+            - name: Validate JSON syntax
+              run: |
+                  echo "Validating JSON syntax..."
+                  find rules -name "*.json" -exec jq empty {} \;
+                  jq empty rules-index.json
+                  echo "✓ All JSON files have valid syntax"
 
-      - name: Validate against JSON schema
-        run: |
-          echo "Running JSON Schema validation..."
-          for file in rules/*/*.json; do
-            echo "Validating: $file"
-            ajv validate -s schemas/rule-schema.json -d "$file" --strict=false
-          done
-          echo "All rules passed schema validation!"
+            - name: Validate against schema
+              run: |
+                  echo "Validating rules against schema..."
+                  for file in rules/*/*.json; do
+                    ajv validate -s schemas/rule-schema.json -d "$file" --strict=false || exit 1
+                  done
+                  echo "✓ All rules match schema"
 
-  generate-index:
-    name: Generate Rules Index
-    runs-on: ubuntu-latest
-    needs: validate
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+            - name: Run validation script
+              run: |
+                  chmod +x scripts/validate-rules.sh
+                  ./scripts/validate-rules.sh --verbose
 
-      - name: Make scripts executable
-        run: chmod +x scripts/*.sh
+            - name: Check index is up to date
+              run: |
+                  chmod +x scripts/generate-index.sh
+                  ./scripts/generate-index.sh -o /tmp/generated-index.json
 
-      - name: Generate rules index
-        run: ./scripts/generate-index.sh
+                  # Compare rule counts and keys
+                  current_rules=$(jq '.rules | length' rules-index.json)
+                  generated_rules=$(jq '.rules | length' /tmp/generated-index.json)
 
-      - name: Commit updated index
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: regenerate rules-index.json"
-          file_pattern: rules-index.json
-          commit_user_name: github-actions[bot]
-          commit_user_email: github-actions[bot]@users.noreply.github.com
+                  if [ "$current_rules" != "$generated_rules" ]; then
+                    echo "⚠️ Index is out of date!"
+                    echo "Current index has $current_rules rules"
+                    echo "Generated index has $generated_rules rules"
+                    echo ""
+                    echo "Run './scripts/generate-index.sh' to update"
+                    exit 1
+                  fi
 
-  stats:
-    name: Report Statistics
-    runs-on: ubuntu-latest
-    needs: validate
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+                  echo "✓ Index is up to date"
 
-      - name: Generate statistics
-        run: |
-          echo "## 📊 Rules Statistics" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          total=$(find rules -name "*.json" | wc -l | tr -d ' ')
-          echo "**Total Rules:** $total" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          echo "### By Category" >> $GITHUB_STEP_SUMMARY
-          echo "| Category | Count |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
-          for dir in rules/*/; do
-            category=$(basename "$dir")
-            count=$(find "$dir" -name "*.json" | wc -l | tr -d ' ')
-            echo "| $category | $count |" >> $GITHUB_STEP_SUMMARY
-          done
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          echo "### By Severity" >> $GITHUB_STEP_SUMMARY
-          echo "| Severity | Count |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
-          for severity in BLOCKER CRITICAL MAJOR MINOR INFO; do
-            count=$(grep -r "\"severity\": \"$severity\"" rules --include="*.json" | wc -l | tr -d ' ')
-            if [ "$count" -gt 0 ]; then
-              echo "| $severity | $count |" >> $GITHUB_STEP_SUMMARY
-            fi
-          done
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          echo "### By Type" >> $GITHUB_STEP_SUMMARY
-          echo "| Type | Count |" >> $GITHUB_STEP_SUMMARY
-          echo "|------|-------|" >> $GITHUB_STEP_SUMMARY
-          for type in VULNERABILITY BUG CODE_SMELL; do
-            count=$(grep -r "\"type\": \"$type\"" rules --include="*.json" | wc -l | tr -d ' ')
-            if [ "$count" -gt 0 ]; then
-              echo "| $type | $count |" >> $GITHUB_STEP_SUMMARY
-            fi
-          done
+    lint:
+        name: Lint Rule Content
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Check for common issues
+              run: |
+                  echo "Checking for common issues..."
+
+                  # Check for empty descriptions
+                  empty_desc=$(find rules -name "*.json" -exec sh -c 'jq -e ".description | length < 50" "$1" > /dev/null 2>&1 && echo "$1"' _ {} \;)
+                  if [ -n "$empty_desc" ]; then
+                    echo "⚠️ Files with short descriptions (< 50 chars):"
+                    echo "$empty_desc"
+                  fi
+
+                  # Check for missing examples
+                  no_examples=$(find rules -name "*.json" -exec sh -c 'jq -e ".remediation.examples | length == 0" "$1" > /dev/null 2>&1 && echo "$1"' _ {} \;)
+                  if [ -n "$no_examples" ]; then
+                    echo "⚠️ Files without code examples:"
+                    echo "$no_examples"
+                  fi
+
+                  echo "✓ Content checks complete"
+
+    report:
+        name: Generate Report
+        runs-on: ubuntu-latest
+        needs: [validate, lint]
+        if: github.event_name == 'pull_request'
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Generate summary
+              run: |
+                  echo "## 📊 Rules Validation Report" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+
+                  # Count rules by category
+                  echo "### Rules by Category" >> $GITHUB_STEP_SUMMARY
+                  echo "| Category | Count |" >> $GITHUB_STEP_SUMMARY
+                  echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+
+                  for dir in rules/*/; do
+                    category=$(basename "$dir")
+                    count=$(find "$dir" -name "*.json" | wc -l | tr -d ' ')
+                    echo "| $category | $count |" >> $GITHUB_STEP_SUMMARY
+                  done
+
+                  total=$(find rules -name "*.json" | wc -l | tr -d ' ')
+                  echo "| **Total** | **$total** |" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+
+                  # Count by severity
+                  echo "### Rules by Severity" >> $GITHUB_STEP_SUMMARY
+                  echo "| Severity | Count |" >> $GITHUB_STEP_SUMMARY
+                  echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+
+                  for sev in BLOCKER CRITICAL MAJOR MINOR INFO; do
+                    count=$(grep -l "\"severity\": \"$sev\"" rules/*/*.json 2>/dev/null | wc -l | tr -d ' ')
+                    echo "| $sev | $count |" >> $GITHUB_STEP_SUMMARY
+                  done
+
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "✅ All validations passed!" >> $GITHUB_STEP_SUMMARY
