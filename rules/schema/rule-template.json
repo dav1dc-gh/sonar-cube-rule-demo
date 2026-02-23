@@ -1,0 +1,29 @@
+{
+  "key": "rule-key-here",
+  "name": "Rule Name in Title Case",
+  "description": "One or two sentences explaining what the rule detects and why it matters.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["tag-one", "tag-two"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "// Problematic code pattern",
+        "after": "// Corrected code pattern"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

@@ -16,6 +16,10 @@
   },
   "impacts": [
     {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    },
+    {
       "softwareQuality": "RELIABILITY",
       "severity": "MEDIUM"
     }

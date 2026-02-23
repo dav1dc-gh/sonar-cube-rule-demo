@@ -1,0 +1,8 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["rules/**/*.json", "!rules/schema/**"],
+      "url": "./rules/schema/sonarqube-rule.schema.json"
+    }
+  ]
+}

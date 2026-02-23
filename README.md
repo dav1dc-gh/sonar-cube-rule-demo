@@ -144,14 +144,48 @@ Each rule file contains:
 - `debt`: Technical debt estimation
 - `params`: Configurable parameters (when applicable)
 
+## Tooling & Validation
+
+This repository includes infrastructure to keep rules consistent and catch errors early:
+
+### JSON Schema
+
+A formal JSON Schema is provided at [`rules/schema/sonarqube-rule.schema.json`](rules/schema/sonarqube-rule.schema.json). It validates field types, enums, required fields, and conditional requirements (e.g., `debt.coefficient` is required when `debt.function` is `LINEAR`).
+
+**VS Code users** get automatic in-editor validation via the included [`.vscode/settings.json`](.vscode/settings.json) — red squiggles appear instantly on invalid values.
+
+### Validation Script
+
+A Python validator covers everything the JSON Schema does plus cross-field consistency checks (key↔filename match, severity↔defaultSeverity alignment, type↔impact coherence):
+
+```bash
+# Validate all rules
+python3 scripts/validate-rules.py
+
+# Validate a single file
+python3 scripts/validate-rules.py rules/security/sql-injection.json
+
+# Strict mode (treats warnings as errors)
+python3 scripts/validate-rules.py --strict
+```
+
+### CI Pipeline
+
+The [GitHub Actions workflow](.github/workflows/validate-rules.yml) runs on every push and PR that touches rule files. It runs both standard and strict validation plus a formatting check.
+
+### Rule Template
+
+Start new rules from [`rules/schema/rule-template.json`](rules/schema/rule-template.json) to ensure all required fields are present from the start.
+
 ## Usage
 
 These rule definitions can be imported into SonarQube custom rule plugins or used as reference for creating custom quality profiles.
 
 ## Contributing
 
-When adding new rules:
-1. Place them in the appropriate category directory
-2. Follow the existing JSON structure
-3. Include clear descriptions and remediation examples
-4. Set appropriate severity and type classifications
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide. Quick summary:
+
+1. Copy the template: `cp rules/schema/rule-template.json rules/<category>/<rule-key>.json`
+2. Fill in all required fields (key must match filename, severity must match defaultSeverity)
+3. Validate: `python3 scripts/validate-rules.py`
+4. Open a pull request — CI handles the rest

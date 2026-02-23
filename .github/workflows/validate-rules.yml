@@ -1,0 +1,55 @@
+name: Validate SonarQube Rules
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rules/**/*.json'
+      - 'scripts/validate-rules.py'
+      - 'rules/schema/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rules/**/*.json'
+      - 'scripts/validate-rules.py'
+      - 'rules/schema/**'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Lint & Validate Rule Definitions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate all rule files
+        run: python3 scripts/validate-rules.py
+
+      - name: Strict validation (warnings → errors)
+        run: python3 scripts/validate-rules.py --strict
+
+      - name: Verify JSON formatting (2-space indent)
+        run: |
+          FAIL=0
+          for f in $(find rules -name '*.json' -not -path 'rules/schema/*'); do
+            EXPECTED=$(python3 -c "
+          import json
+          with open('$f') as fh:
+              data = json.load(fh)
+          print(json.dumps(data, indent=2, ensure_ascii=False))
+          ")
+            ACTUAL=$(cat "$f")
+            if [ "$EXPECTED" != "$ACTUAL" ]; then
+              echo "::warning file=$f::JSON is not formatted with 2-space indentation. Run: python3 -c \"import json; d=json.load(open('$f')); open('$f','w').write(json.dumps(d,indent=2,ensure_ascii=False)+'\\n')\""
+              FAIL=1
+            fi
+          done
+          if [ "$FAIL" -eq 1 ]; then
+            echo "::notice::Some files have formatting issues. See warnings above."
+          fi

@@ -1,0 +1,204 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/sonarqube-rule.schema.json",
+  "title": "SonarQube Rule Definition",
+  "description": "Schema for SonarQube custom rule definition JSON files.",
+  "type": "object",
+  "required": [
+    "key",
+    "name",
+    "description",
+    "severity",
+    "type",
+    "tags",
+    "remediation",
+    "impacts",
+    "defaultSeverity",
+    "status",
+    "debt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "description": "Unique kebab-case identifier. Must match the filename without .json extension."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name in title case."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "One or two sentences explaining what the rule detects and why it matters."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["INFO", "MINOR", "MAJOR", "CRITICAL", "BLOCKER"],
+      "description": "Rule severity level."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["CODE_SMELL", "BUG", "VULNERABILITY", "SECURITY_HOTSPOT"],
+      "description": "SonarQube rule type."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+      },
+      "minItems": 1,
+      "description": "Non-empty array of lowercase kebab-case tags."
+    },
+    "remediation": {
+      "type": "object",
+      "required": ["constantCost", "examples"],
+      "additionalProperties": false,
+      "properties": {
+        "constantCost": {
+          "type": "string",
+          "pattern": "^\\d+(min|h|d)$",
+          "description": "Estimated fix time, e.g. '30min', '1h', '4h'."
+        },
+        "examples": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["before", "after"],
+            "additionalProperties": false,
+            "properties": {
+              "before": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Code or description of the problematic pattern."
+              },
+              "after": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Code or description of the corrected pattern."
+              }
+            }
+          }
+        }
+      }
+    },
+    "impacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["softwareQuality", "severity"],
+        "additionalProperties": false,
+        "properties": {
+          "softwareQuality": {
+            "type": "string",
+            "enum": ["MAINTAINABILITY", "RELIABILITY", "SECURITY"],
+            "description": "Affected software quality attribute."
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["LOW", "MEDIUM", "HIGH"],
+            "description": "Impact severity level."
+          }
+        }
+      }
+    },
+    "defaultSeverity": {
+      "type": "string",
+      "enum": ["INFO", "MINOR", "MAJOR", "CRITICAL", "BLOCKER"],
+      "description": "Must match the top-level severity value."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["READY", "BETA", "DEPRECATED", "REMOVED"],
+      "description": "Rule lifecycle status."
+    },
+    "debt": {
+      "type": "object",
+      "required": ["function"],
+      "additionalProperties": false,
+      "properties": {
+        "function": {
+          "type": "string",
+          "enum": ["LINEAR", "CONSTANT_ISSUE", "LINEAR_OFFSET"],
+          "description": "Technical debt calculation function."
+        },
+        "coefficient": {
+          "type": "string",
+          "pattern": "^\\d+(min|h|d)$",
+          "description": "Required for LINEAR and LINEAR_OFFSET functions."
+        },
+        "offset": {
+          "type": "string",
+          "pattern": "^\\d+(min|h|d)$",
+          "description": "Required for CONSTANT_ISSUE and LINEAR_OFFSET functions."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "function": { "const": "LINEAR" } }
+          },
+          "then": {
+            "required": ["function", "coefficient"]
+          }
+        },
+        {
+          "if": {
+            "properties": { "function": { "const": "CONSTANT_ISSUE" } }
+          },
+          "then": {
+            "required": ["function", "offset"]
+          }
+        },
+        {
+          "if": {
+            "properties": { "function": { "const": "LINEAR_OFFSET" } }
+          },
+          "then": {
+            "required": ["function", "coefficient", "offset"]
+          }
+        }
+      ]
+    },
+    "params": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "name", "description", "defaultValue", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-zA-Z0-9]*$",
+            "description": "camelCase parameter identifier."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable parameter label."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Explains the parameter."
+          },
+          "defaultValue": {
+            "type": "string",
+            "description": "Default value as a string."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["INTEGER", "FLOAT", "BOOLEAN", "STRING", "TEXT"],
+            "description": "Parameter data type."
+          }
+        }
+      }
+    }
+  }
+}
