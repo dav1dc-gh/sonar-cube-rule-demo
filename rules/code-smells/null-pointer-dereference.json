@@ -1,0 +1,37 @@
+{
+  "key": "null-pointer-dereference",
+  "name": "Null Pointer Dereference",
+  "description": "Detects code paths where a potentially null reference is dereferenced without a null check, which is the most common cause of runtime crashes in production systems.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["bug", "null", "crash", "reliability"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "String city = user.getAddress().getCity().toUpperCase();\n// If getAddress() or getCity() returns null, a NullPointerException is thrown",
+        "after": "String city = Optional.ofNullable(user.getAddress())\n  .map(Address::getCity)\n  .map(String::toUpperCase)\n  .orElse(\"UNKNOWN\");"
+      },
+      {
+        "before": "Map<String, Config> configs = loadConfigs();\nString value = configs.get(key).getValue();\n// get() returns null if key is absent — immediate NPE",
+        "after": "Map<String, Config> configs = loadConfigs();\nConfig config = configs.get(key);\nif (config == null) {\n  throw new IllegalArgumentException(\"No config found for key: \" + key);\n}\nString value = config.getValue();"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    },
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

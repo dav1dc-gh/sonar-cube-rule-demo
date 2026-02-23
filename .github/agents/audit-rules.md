@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Run a comprehensive audit of all SonarQube rule definitions — validates every file, checks cross-rule consistency, identifies gaps in coverage, and produces a full health report.
-tools: ['editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
+tools: ['edit', 'search', 'editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
 ---
 
 # Audit All SonarQube Rules

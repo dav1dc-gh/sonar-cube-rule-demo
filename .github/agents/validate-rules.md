@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Run the validation script against SonarQube rule files, diagnose failures, and apply targeted fixes to pass validation.
-tools: ['editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search']
+tools: ['edit', 'search', 'editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search']
 ---
 
 # Validate SonarQube Rules

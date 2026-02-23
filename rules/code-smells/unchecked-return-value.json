@@ -1,0 +1,37 @@
+{
+  "key": "unchecked-return-value",
+  "name": "Unchecked Return Value",
+  "description": "Detects when return values from methods that indicate success, failure, or resource state are silently ignored, leading to undetected errors and unreliable program behavior.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["bug", "reliability", "error-handling"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "File file = new File(\"/tmp/data.csv\");\nfile.delete();\nfile.createNewFile();\n// Return values ignored — deletion or creation failure goes unnoticed",
+        "after": "File file = new File(\"/tmp/data.csv\");\nif (!file.delete()) {\n  throw new IOException(\"Failed to delete \" + file.getAbsolutePath());\n}\nif (!file.createNewFile()) {\n  throw new IOException(\"Failed to create \" + file.getAbsolutePath());\n}"
+      },
+      {
+        "before": "BlockingQueue<Event> queue = new LinkedBlockingQueue<>(100);\nqueue.offer(event);\n// offer() returns false when the queue is full — silently dropped",
+        "after": "BlockingQueue<Event> queue = new LinkedBlockingQueue<>(100);\nif (!queue.offer(event)) {\n  log.warn(\"Queue full, event dropped: {}\", event.getId());\n  metrics.increment(\"events.dropped\");\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    },
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

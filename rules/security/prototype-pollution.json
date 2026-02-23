@@ -1,0 +1,29 @@
+{
+  "key": "prototype-pollution",
+  "name": "Prototype Pollution",
+  "description": "Detects unguarded recursive merge or property assignment where attacker-controlled keys such as __proto__ can corrupt Object.prototype, compromising every object in the runtime.",
+  "severity": "BLOCKER",
+  "type": "VULNERABILITY",
+  "tags": ["security", "injection", "javascript", "cwe-1321", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "function merge(target, source) {\n  for (const key in source) {\n    target[key] = source[key]; // key could be '__proto__'\n  }\n}",
+        "after": "const BLOCKED = new Set(['__proto__', 'constructor', 'prototype']);\nfunction merge(target, source) {\n  for (const key in source) {\n    if (BLOCKED.has(key)) continue;\n    target[key] = source[key];\n  }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "BLOCKER",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

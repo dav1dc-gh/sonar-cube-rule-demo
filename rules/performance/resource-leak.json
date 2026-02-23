@@ -1,0 +1,33 @@
+{
+  "key": "resource-leak",
+  "name": "Resource Leak",
+  "description": "Detects streams, connections, and other closeable resources that are opened but not guaranteed to be closed, risking resource exhaustion and application instability.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["bug", "leak", "performance", "reliability"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "InputStream is = new FileInputStream(\"config.properties\");\nProperties props = new Properties();\nprops.load(is);\n// Stream is never closed — leaked if load() throws an exception",
+        "after": "try (InputStream is = new FileInputStream(\"config.properties\")) {\n  Properties props = new Properties();\n  props.load(is);\n}\n// Stream is automatically closed even if an exception occurs"
+      },
+      {
+        "before": "Connection conn = dataSource.getConnection();\nPreparedStatement ps = conn.prepareStatement(sql);\nResultSet rs = ps.executeQuery();\nwhile (rs.next()) { process(rs); }\n// Connection, statement, and result set are never closed",
+        "after": "try (Connection conn = dataSource.getConnection();\n     PreparedStatement ps = conn.prepareStatement(sql);\n     ResultSet rs = ps.executeQuery()) {\n  while (rs.next()) { process(rs); }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

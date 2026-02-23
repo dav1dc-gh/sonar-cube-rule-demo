@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Lint one or more SonarQube rule definition files for schema compliance, consistency, and formatting. Reports errors, warnings, and suggestions.
-tools: ['editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
+tools: ['edit', 'search', 'editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
 ---
 
 # Lint SonarQube Rules

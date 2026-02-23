@@ -1,0 +1,29 @@
+{
+  "key": "thread-pool-starvation",
+  "name": "Thread Pool Starvation from Blocking Calls",
+  "description": "Detects blocking calls such as Thread.sleep, CompletableFuture.get, or synchronous I/O inside shared thread pools, which can exhaust all available threads and cause a full service outage.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["performance", "concurrency", "thread-pool", "availability", "blocking"],
+  "remediation": {
+    "constantCost": "1h",
+    "examples": [
+      {
+        "before": "@Async\npublic void processJob(String id) {\n    Thread.sleep(5000); // holds a pool thread for 5 seconds\n    performWork(id);\n}",
+        "after": "@Async\npublic CompletableFuture<Void> processJob(String id) {\n    return CompletableFuture\n        .runAsync(() -> performWork(id),\n            CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS, scheduledExecutor));\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "1h"
+  }
+}

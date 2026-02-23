@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Reorganise, move, rename, or bulk-manage SonarQube rule files across categories. Handles directory structure, naming conventions, and documentation updates.
-tools: ['editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'create_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
+tools: ['edit', 'search', 'editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'create_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
 ---
 
 # Organise SonarQube Rules Repository

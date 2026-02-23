@@ -1,0 +1,37 @@
+{
+  "key": "race-condition",
+  "name": "Race Condition on Shared State",
+  "description": "Detects unsynchronized read-write access to shared mutable state across threads, causing intermittent data corruption and hard-to-reproduce bugs.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["bug", "concurrency", "thread-safety", "reliability"],
+  "remediation": {
+    "constantCost": "1h",
+    "examples": [
+      {
+        "before": "public class Counter {\n  private int count = 0;\n  public void increment() { count++; }\n  public int getCount() { return count; }\n}\n// count++ is not atomic — concurrent increments lose updates",
+        "after": "public class Counter {\n  private final AtomicInteger count = new AtomicInteger(0);\n  public void increment() { count.incrementAndGet(); }\n  public int getCount() { return count.get(); }\n}"
+      },
+      {
+        "before": "// Check-then-act without synchronization\nif (!map.containsKey(key)) {\n  map.put(key, computeValue(key));\n}\n// Another thread may insert between containsKey and put",
+        "after": "// Use atomic compute to eliminate the race\nmap.computeIfAbsent(key, k -> computeValue(k));"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    },
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "1h"
+  }
+}

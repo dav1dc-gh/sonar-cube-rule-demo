@@ -1,0 +1,33 @@
+{
+  "key": "unclosed-resources",
+  "name": "Unclosed Resources",
+  "description": "Detects file handles, database connections, streams, and sockets that are opened but never explicitly closed, leading to resource exhaustion under load.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["performance", "resource-management", "reliability", "resource-leak"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "Connection conn = dataSource.getConnection();\nStatement stmt = conn.createStatement();\nResultSet rs = stmt.executeQuery(sql);\n// process results — conn, stmt, rs never closed",
+        "after": "try (Connection conn = dataSource.getConnection();\n     Statement stmt = conn.createStatement();\n     ResultSet rs = stmt.executeQuery(sql)) {\n  // process results\n} // all resources automatically closed"
+      },
+      {
+        "before": "BufferedReader reader = new BufferedReader(new FileReader(path));\nString line = reader.readLine();\nreturn line;\n// reader never closed on exception path",
+        "after": "try (BufferedReader reader = new BufferedReader(new FileReader(path))) {\n  return reader.readLine();\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

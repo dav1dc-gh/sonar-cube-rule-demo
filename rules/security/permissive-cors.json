@@ -1,0 +1,29 @@
+{
+  "key": "permissive-cors",
+  "name": "Overly Permissive CORS Configuration",
+  "description": "Detects CORS configurations that reflect arbitrary Origins or combine a wildcard allow-origin with credentials, enabling cross-origin authenticated requests from any attacker-controlled site.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "cors", "owasp-top-10", "misconfiguration", "access-control"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "response.setHeader(\"Access-Control-Allow-Origin\", \"*\");\nresponse.setHeader(\"Access-Control-Allow-Credentials\", \"true\");",
+        "after": "if (ALLOWED_ORIGINS.contains(request.getHeader(\"Origin\"))) {\n    response.setHeader(\"Access-Control-Allow-Origin\", request.getHeader(\"Origin\"));\n    response.setHeader(\"Access-Control-Allow-Credentials\", \"true\");\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

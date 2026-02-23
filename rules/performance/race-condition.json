@@ -1,0 +1,33 @@
+{
+  "key": "race-condition",
+  "name": "Race Condition on Shared Mutable State",
+  "description": "Detects unsynchronized access to shared mutable state across threads, including check-then-act patterns and non-thread-safe collection usage in concurrent contexts.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["concurrency", "threading", "race-condition", "reliability"],
+  "remediation": {
+    "constantCost": "1h",
+    "examples": [
+      {
+        "before": "private Map<String, Session> sessions = new HashMap<>();\n\npublic void addSession(String id, Session s) {\n  sessions.put(id, s); // unsynchronized write\n}",
+        "after": "private final ConcurrentMap<String, Session> sessions = new ConcurrentHashMap<>();\n\npublic void addSession(String id, Session s) {\n  sessions.put(id, s); // thread-safe write\n}"
+      },
+      {
+        "before": "// Check-then-act race condition\nif (!cache.containsKey(key)) {\n  cache.put(key, computeValue(key));\n}",
+        "after": "// Atomic check-then-act\ncache.computeIfAbsent(key, k -> computeValue(k));"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "1h"
+  }
+}

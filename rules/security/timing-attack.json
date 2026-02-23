@@ -1,0 +1,29 @@
+{
+  "key": "timing-attack",
+  "name": "Timing Attack on Secret Comparison",
+  "description": "Detects use of standard equality operators to compare secrets, tokens, or HMAC signatures, which leaks timing information and allows attackers to reconstruct the secret byte by byte.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "cryptography", "cwe-208", "authentication", "timing"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "# Early-exit comparison leaks per-byte timing\nif request.headers[\"X-Signature\"] == expected_signature:\n    process_webhook(request)",
+        "after": "# Constant-time comparison regardless of where strings differ\nimport hmac\nif hmac.compare_digest(request.headers[\"X-Signature\"], expected_signature):\n    process_webhook(request)"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "mass-assignment",
+  "name": "Mass Assignment Vulnerability",
+  "description": "Detects direct binding of raw HTTP request bodies to domain objects or ORM entities without an explicit allow-list, allowing attackers to set privileged fields such as isAdmin or role.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "injection", "owasp-top-10", "authorization", "input-validation"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "# Binds all request fields including isAdmin, role, balance\nuser = User(**request.get_json())\ndb.session.add(user)",
+        "after": "# Allow-list only safe, user-supplied fields via a schema\nschema = UserCreateSchema(only=[\"username\", \"email\", \"password\"])\nuser = User(**schema.load(request.get_json()))\ndb.session.add(user)"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

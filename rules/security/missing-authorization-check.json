@@ -1,0 +1,29 @@
+{
+  "key": "missing-authorization-check",
+  "name": "Missing Authorization Check",
+  "description": "Detects endpoints or data-access methods that lack authorization verification, enabling Insecure Direct Object Reference attacks (CWE-862, OWASP A01).",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "authorization", "idor", "owasp-top-10", "access-control"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "@GetMapping(\"/api/accounts/{id}\")\npublic Account getAccount(@PathVariable Long id) {\n  // No check that the caller owns this account\n  return accountRepository.findById(id).orElseThrow();\n}",
+        "after": "@GetMapping(\"/api/accounts/{id}\")\npublic Account getAccount(@PathVariable Long id, Authentication auth) {\n  Account account = accountRepository.findById(id).orElseThrow();\n  if (!account.getOwnerId().equals(auth.getName())) {\n    throw new AccessDeniedException(\"Not authorized\");\n  }\n  return account;\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

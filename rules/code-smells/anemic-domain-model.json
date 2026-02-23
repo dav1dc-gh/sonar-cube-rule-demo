@@ -1,0 +1,29 @@
+{
+  "key": "anemic-domain-model",
+  "name": "Anemic Domain Model",
+  "description": "Detects domain objects that contain only fields and accessors with no business logic, violating OOP encapsulation principles and scattering behaviour across service layers.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["design", "oop", "domain-model", "encapsulation"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "public class Order {\n  private List<OrderLine> lines;\n  private BigDecimal total;\n\n  public List<OrderLine> getLines() { return lines; }\n  public void setLines(List<OrderLine> lines) { this.lines = lines; }\n  public BigDecimal getTotal() { return total; }\n  public void setTotal(BigDecimal total) { this.total = total; }\n}",
+        "after": "public class Order {\n  private final List<OrderLine> lines = new ArrayList<>();\n\n  public void addLine(OrderLine line) {\n    lines.add(line);\n  }\n\n  public BigDecimal calculateTotal() {\n    return lines.stream()\n      .map(OrderLine::subtotal)\n      .reduce(BigDecimal.ZERO, BigDecimal::add);\n  }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

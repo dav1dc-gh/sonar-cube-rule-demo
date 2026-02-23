@@ -1,0 +1,29 @@
+{
+  "key": "unsafe-reflection",
+  "name": "Unsafe Reflection from User Input",
+  "description": "Detects use of reflection APIs such as Class.forName() or Method.invoke() with user-controlled input, which can lead to remote code execution (CWE-470).",
+  "severity": "BLOCKER",
+  "type": "VULNERABILITY",
+  "tags": ["security", "injection", "reflection", "cwe-470", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "1h",
+    "examples": [
+      {
+        "before": "// User input directly drives class loading\nString className = request.getParameter(\"handler\");\nClass<?> clazz = Class.forName(className);\nObject instance = clazz.getDeclaredConstructor().newInstance();\n((Handler) instance).execute();",
+        "after": "// Allowlist of permitted handler classes\nprivate static final Map<String, Class<? extends Handler>> ALLOWED = Map.of(\n  \"export\", ExportHandler.class,\n  \"import\", ImportHandler.class\n);\n\nString handlerName = request.getParameter(\"handler\");\nClass<? extends Handler> clazz = ALLOWED.get(handlerName);\nif (clazz == null) {\n  throw new IllegalArgumentException(\"Unknown handler: \" + handlerName);\n}\nHandler instance = clazz.getDeclaredConstructor().newInstance();\ninstance.execute();"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "BLOCKER",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "1h"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "key": "disabled-certificate-validation",
+  "name": "Disabled SSL/TLS Certificate Validation",
+  "description": "Detects code that disables SSL/TLS certificate verification, enabling man-in-the-middle attacks on all HTTPS traffic (CWE-295).",
+  "severity": "BLOCKER",
+  "type": "VULNERABILITY",
+  "tags": ["security", "ssl", "tls", "certificate", "cwe-295", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "# Python: disabling certificate verification\nresponse = requests.get(url, verify=False)",
+        "after": "# Python: use proper certificate verification\nresponse = requests.get(url, verify='/path/to/ca-bundle.crt')"
+      },
+      {
+        "before": "// Java: trust-all certificate manager\nSSLContext sc = SSLContext.getInstance(\"TLS\");\nsc.init(null, new TrustManager[]{trustAllManager}, new SecureRandom());",
+        "after": "// Java: use the default trust manager with proper certificates\nSSLContext sc = SSLContext.getInstance(\"TLS\");\nsc.init(null, null, new SecureRandom());"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "BLOCKER",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

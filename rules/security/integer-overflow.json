@@ -1,0 +1,37 @@
+{
+  "key": "integer-overflow",
+  "name": "Integer Overflow",
+  "description": "Detects arithmetic operations on integers that can silently overflow or underflow, leading to wrong calculations, security bypasses, or buffer over-reads.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["vulnerability", "overflow", "arithmetic", "security"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "int total = price * quantity;\n// If price=2_000_000 and quantity=2_000, total silently wraps to a negative value",
+        "after": "long total = Math.multiplyExact((long) price, (long) quantity);\n// multiplyExact throws ArithmeticException on overflow instead of wrapping silently"
+      },
+      {
+        "before": "byte[] buffer = new byte[headerLen + bodyLen];\n// If headerLen + bodyLen exceeds Integer.MAX_VALUE, the sum wraps negative\n// and the array allocation uses a wrong (small or negative) size",
+        "after": "int totalLen = Math.addExact(headerLen, bodyLen);\nif (totalLen > MAX_ALLOWED_SIZE) {\n  throw new IllegalArgumentException(\"Payload too large: \" + totalLen);\n}\nbyte[] buffer = new byte[totalLen];"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    },
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

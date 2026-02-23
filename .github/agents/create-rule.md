@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Create a new SonarQube rule definition file from the project template, with correct category placement, field validation, and formatting.
-tools: ['editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'create_file', 'read_file', 'replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
+tools: ['edit', 'search', 'create_file', 'read_file', 'replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
 ---
 
 # Create New SonarQube Rule
@@ -17,10 +17,7 @@ Load and follow the instructions in these skill files before proceeding:
 
 ## Workflow
 
-1. **Gather requirements** — Ask the user what code pattern the rule should detect. If the user provides only a vague idea, ask clarifying questions about:
-   - What language or framework does this apply to?
-   - What is the problematic pattern vs. the correct pattern?
-   - How severe is the issue? (security flaw, performance bottleneck, code smell, etc.)
+1. **Gather requirements** — Infer the rule details from the user's request. If critical information is missing (language, problematic pattern, severity), ask a single concise follow-up rather than multiple questions. Prefer reasonable defaults and proceed.
 
 2. **Determine category** — Based on the rule's type and focus, select the correct directory:
    - `rules/security/` for VULNERABILITY / SECURITY_HOTSPOT
