@@ -10,23 +10,34 @@ This repository contains a collection of SonarQube rule definitions organized by
 
 ```
 rules/
-├── security/              # Security vulnerability rules (15 rules)
+├── security/              # Security rules (25 rules)
 │   ├── command-injection.json
 │   ├── csrf-vulnerability.json
+│   ├── disabled-certificate-validation.json
 │   ├── hardcoded-credentials.json
 │   ├── insecure-cookie.json
 │   ├── insecure-deserialization.json
 │   ├── insecure-random.json
+│   ├── integer-overflow.json
+│   ├── jwt-misconfiguration.json
 │   ├── ldap-injection.json
+│   ├── log-injection.json
+│   ├── mass-assignment.json
+│   ├── missing-authorization-check.json
 │   ├── open-redirect.json
 │   ├── path-traversal.json
+│   ├── permissive-cors.json
+│   ├── prototype-pollution.json
 │   ├── sensitive-data-exposure.json
 │   ├── server-side-request-forgery.json
 │   ├── sql-injection.json
+│   ├── timing-attack.json
+│   ├── unsafe-reflection.json
 │   ├── weak-cryptography.json
 │   ├── xml-external-entity.json
 │   └── xss-vulnerability.json
-├── code-smells/          # Code quality and maintainability issues (13 rules)
+├── code-smells/           # Code Smells rules (16 rules)
+│   ├── anemic-domain-model.json
 │   ├── complex-methods.json
 │   ├── data-clumps.json
 │   ├── dead-code.json
@@ -37,23 +48,30 @@ rules/
 │   ├── long-parameter-list.json
 │   ├── magic-numbers.json
 │   ├── message-chains.json
+│   ├── null-pointer-dereference.json
 │   ├── primitive-obsession.json
 │   ├── refused-bequest.json
-│   └── speculative-generality.json
-├── performance/          # Performance-related rules (12 rules)
+│   ├── speculative-generality.json
+│   └── unchecked-return-value.json
+├── performance/           # Performance rules (17 rules)
 │   ├── connection-pool-exhaustion.json
 │   ├── excessive-object-creation.json
 │   ├── inefficient-collection-usage.json
 │   ├── inefficient-loops.json
 │   ├── memory-leaks.json
+│   ├── missing-batch-operations.json
 │   ├── missing-lazy-initialization.json
 │   ├── n-plus-one-query.json
+│   ├── race-condition.json
+│   ├── resource-leak.json
 │   ├── string-concatenation-in-loop.json
 │   ├── synchronous-io-in-async.json
+│   ├── thread-pool-starvation.json
 │   ├── unbounded-collection-growth.json
+│   ├── unclosed-resources.json
 │   ├── unnecessary-boxing.json
 │   └── unoptimized-regex.json
-└── maintainability/      # Code maintainability rules (12 rules)
+└── maintainability/       # Maintainability rules (15 rules)
     ├── boolean-blindness.json
     ├── circular-dependencies.json
     ├── deep-nesting.json
@@ -64,71 +82,95 @@ rules/
     ├── long-methods.json
     ├── missing-javadoc.json
     ├── missing-null-check.json
+    ├── mutable-static-state.json
+    ├── race-condition.json
     ├── shotgun-surgery.json
+    ├── swallowed-exceptions.json
     └── too-many-parameters.json
 ```
 
 ## Rule Categories
 
-### Security (15 rules)
-- **Command Injection**: Detects OS command injection vulnerabilities where user input is passed to system commands
-- **CSRF Vulnerability**: Detects missing Cross-Site Request Forgery protection on state-changing operations
-- **Hardcoded Credentials**: Finds hardcoded passwords and API keys
-- **Insecure Cookie**: Detects cookies created without essential security flags (Secure, HttpOnly, SameSite)
-- **Insecure Deserialization**: Detects unsafe deserialization of untrusted data leading to potential RCE
-- **Insecure Random**: Detects usage of predictable random number generators for security-sensitive operations
-- **LDAP Injection**: Detects when user input is concatenated directly into LDAP queries without proper sanitization
-- **Open Redirect**: Detects when user-controlled input is used to construct redirect URLs without proper validation
-- **Path Traversal**: Identifies path traversal vulnerabilities allowing access to files outside intended directories
-- **Sensitive Data Exposure**: Detects logging of sensitive information like passwords and PII
-- **Server-Side Request Forgery (SSRF)**: Detects when user-controlled URLs are used to make server-side HTTP requests without validation
-- **SQL Injection Prevention**: Detects potential SQL injection vulnerabilities
-- **Weak Cryptography**: Detects usage of weak or deprecated cryptographic algorithms (MD5, SHA1, DES)
-- **XML External Entity (XXE)**: Detects XML parsers configured to process external entities leading to XXE attacks
-- **XSS Vulnerability**: Identifies Cross-Site Scripting risks
+### Security (25 rules)
+- **Command Injection Vulnerability**: Detects potential OS command injection vulnerabilities where user input is passed to system commands without proper sanitization.
+- **Cross-Site Request Forgery (CSRF)**: Detects missing CSRF protection on state-changing operations, which could allow attackers to trick users into performing unintended actions.
+- **Cross-Site Scripting (XSS) Prevention**: Identifies potential XSS vulnerabilities where user-supplied data is rendered in HTML without proper encoding or sanitization.
+- **Disabled SSL/TLS Certificate Validation**: Detects code that disables SSL/TLS certificate verification, enabling man-in-the-middle attacks on all HTTPS traffic (CWE-295).
+- **Hardcoded Credentials Detection**: Detects hardcoded passwords, API keys, tokens, or other sensitive credentials in source code, which poses a significant security risk.
+- **Insecure Cookie Configuration**: Detects cookies created without essential security flags (Secure, HttpOnly, SameSite).
+- **Insecure Deserialization**: Detects unsafe deserialization of untrusted data which can lead to remote code execution, denial of service, or other attacks.
+- **Insecure Random Number Generator**: Detects usage of predictable random number generators (like java.util.Random) for security-sensitive operations such as token generation or cryptographic purposes.
+- **Integer Overflow**: Detects arithmetic operations on integers that can silently overflow or underflow, leading to wrong calculations, security bypasses, or buffer over-reads.
+- **JWT Signature Not Verified**: Detects JWT token parsing that skips signature verification or allows the 'none' algorithm, enabling attackers to forge authentication tokens.
+- **LDAP Injection Vulnerability**: Detects when user input is concatenated directly into LDAP queries without proper sanitization.
+- **Log Injection**: Detects unsanitized user input written directly into log statements, enabling log forging, SIEM evasion, and potential remote code execution via logging frameworks.
+- **Mass Assignment Vulnerability**: Detects direct binding of raw HTTP request bodies to domain objects or ORM entities without an explicit allow-list, allowing attackers to set privileged fields such as isAdmin or role.
+- **Missing Authorization Check**: Detects endpoints or data-access methods that lack authorization verification, enabling Insecure Direct Object Reference attacks (CWE-862, OWASP A01).
+- **Open Redirect Vulnerability**: Detects when user-controlled input is used to construct redirect URLs without proper validation.
+- **Overly Permissive CORS Configuration**: Detects CORS configurations that reflect arbitrary Origins or combine a wildcard allow-origin with credentials, enabling cross-origin authenticated requests from any attacker-controlled site.
+- **Path Traversal Vulnerability**: Detects potential path traversal vulnerabilities where user input is used to construct file paths without proper validation, allowing attackers to access files outside the intended directory.
+- **Prototype Pollution**: Detects unguarded recursive merge or property assignment where attacker-controlled keys such as __proto__ can corrupt Object.prototype, compromising every object in the runtime.
+- **Sensitive Data Exposure in Logs**: Detects logging of sensitive information such as passwords, credit card numbers, social security numbers, or personal identifiable information (PII).
+- **Server-Side Request Forgery (SSRF)**: Detects when user-controlled URLs are used to make server-side HTTP requests without validation.
+- **SQL Injection Prevention**: Detects potential SQL injection vulnerabilities where user input is directly concatenated into SQL queries without proper sanitization or parameterization.
+- **Timing Attack on Secret Comparison**: Detects use of standard equality operators to compare secrets, tokens, or HMAC signatures, which leaks timing information and allows attackers to reconstruct the secret byte by byte.
+- **Unsafe Reflection from User Input**: Detects use of reflection APIs such as Class.forName() or Method.invoke() with user-controlled input, which can lead to remote code execution (CWE-470).
+- **Weak Cryptographic Algorithm**: Detects usage of weak or deprecated cryptographic algorithms such as MD5, SHA1, DES, or RC4 that are vulnerable to attacks.
+- **XML External Entity (XXE) Injection**: Detects XML parsers configured to process external entities, which can lead to XXE attacks.
 
-### Code Smells (13 rules)
-- **Complex Methods**: Flags methods with high cyclomatic complexity
-- **Data Clumps**: Detects groups of variables that frequently appear together across multiple methods or classes
-- **Dead Code**: Detects unreachable code, unused variables, methods, or classes
-- **Duplicate Code**: Identifies code duplication
-- **Empty Catch Block**: Detects empty catch blocks that silently swallow exceptions
-- **Feature Envy**: Detects methods that use more features from other classes than their own
-- **God Class**: Detects classes that are too large and handle too many responsibilities
-- **Long Parameter List**: Detects methods with too many parameters
-- **Magic Numbers**: Detects unnamed numerical constants
-- **Message Chains**: Detects long chains of method calls violating the Law of Demeter
-- **Primitive Obsession**: Detects overuse of primitive types instead of small objects for domain concepts
-- **Refused Bequest**: Detects subclasses that override inherited methods to do nothing or throw exceptions
-- **Speculative Generality**: Detects unused abstractions created for hypothetical future requirements
+### Code Smells (16 rules)
+- **Anemic Domain Model**: Detects domain objects that contain only fields and accessors with no business logic, violating OOP encapsulation principles and scattering behaviour across service layers.
+- **Avoid Magic Numbers**: Detects the use of magic numbers (unnamed numerical constants) in code, which reduces readability and maintainability.
+- **Data Clumps**: Detects groups of variables that frequently appear together across multiple methods or classes.
+- **Dead Code Detection**: Detects unreachable code, unused variables, methods, or classes that serve no purpose and should be removed to improve code clarity.
+- **Duplicate Code Blocks**: Identifies duplicate or nearly identical code blocks that should be refactored into reusable functions or methods to improve maintainability and reduce technical debt.
+- **Empty Catch Block**: Detects empty catch blocks that silently swallow exceptions, hiding potential errors and making debugging difficult.
+- **Feature Envy**: Detects methods that use more features from other classes than from their own class, indicating the method may be misplaced.
+- **God Class Detection**: Detects classes that have grown too large and handle too many responsibilities, violating the Single Responsibility Principle and making the code difficult to understand and maintain.
+- **High Cyclomatic Complexity**: Detects methods or functions with high cyclomatic complexity (too many decision points), making them difficult to understand, test, and maintain.
+- **Long Parameter List**: Detects methods with too many parameters, which makes them difficult to understand, call correctly, and maintain.
+- **Message Chains (Law of Demeter Violation)**: Detects long chains of method calls like a.getB().getC().getD().doSomething().
+- **Null Pointer Dereference**: Detects code paths where a potentially null reference is dereferenced without a null check, which is the most common cause of runtime crashes in production systems.
+- **Primitive Obsession**: Detects overuse of primitive types instead of small objects for domain concepts.
+- **Refused Bequest**: Detects subclasses that override inherited methods to do nothing or throw exceptions, or don't use most inherited functionality.
+- **Speculative Generality**: Detects unused abstractions, interfaces, or parameters created for hypothetical future requirements.
+- **Unchecked Return Value**: Detects when return values from methods that indicate success, failure, or resource state are silently ignored, leading to undetected errors and unreliable program behavior.
 
-### Performance (12 rules)
-- **Connection Pool Exhaustion**: Detects database or HTTP connections that are not properly closed or returned to the pool
-- **Excessive Object Creation**: Detects unnecessary object allocation in frequently executed code paths
-- **Inefficient Collection Usage**: Detects improper use of collections and missing initial capacity
-- **Inefficient Loops**: Detects performance issues in loops
-- **Memory Leaks**: Identifies potential memory leak patterns
-- **Missing Lazy Initialization**: Detects expensive resources that are eagerly initialized but may not always be used
-- **N+1 Query Problem**: Detects database queries executed inside loops causing performance degradation
-- **String Concatenation in Loop**: Detects string concatenation using + operator inside loops
-- **Synchronous I/O in Async Context**: Detects blocking I/O operations within async methods
-- **Unbounded Collection Growth**: Detects collections that grow without bounds and lack eviction policies
-- **Unnecessary Boxing**: Detects unnecessary conversions between primitives and wrapper classes
-- **Unoptimized Regex**: Detects regular expressions compiled repeatedly or susceptible to catastrophic backtracking
+### Performance (17 rules)
+- **Connection Pool Exhaustion Risk**: Detects database or HTTP connections that are not properly closed or returned to the pool.
+- **Excessive Object Creation in Hot Path**: Detects unnecessary object allocation in frequently executed code paths such as loops or high-traffic methods.
+- **Inefficient Collection Usage**: Detects improper use of collections such as using LinkedList for random access, ArrayList for frequent insertions, or not specifying initial capacity for large collections.
+- **Inefficient Loop Operations**: Identifies performance issues in loops such as repeated method calls, unnecessary object creation, or operations that should be moved outside the loop.
+- **Missing Batch Operations**: Detects individual database or API calls executed inside loops instead of using batch or bulk operations, causing severe performance degradation under load.
+- **Missing Lazy Initialization**: Detects expensive resources or objects that are eagerly initialized but may not always be used.
+- **N+1 Query Problem**: Detects potential N+1 query issues where database queries are executed inside loops, causing severe performance degradation.
+- **Potential Memory Leak Detection**: Identifies patterns that may lead to memory leaks such as unclosed resources, event listener accumulation, or references that prevent garbage collection.
+- **Race Condition on Shared Mutable State**: Detects unsynchronized access to shared mutable state across threads, including check-then-act patterns and non-thread-safe collection usage in concurrent contexts.
+- **Resource Leak**: Detects streams, connections, and other closeable resources that are opened but not guaranteed to be closed, risking resource exhaustion and application instability.
+- **String Concatenation in Loop**: Detects string concatenation using + operator inside loops, which creates unnecessary string objects and degrades performance.
+- **Synchronous I/O in Async Context**: Detects blocking I/O operations within asynchronous methods or reactive streams, which defeats the purpose of async programming and can cause thread pool exhaustion.
+- **Thread Pool Starvation from Blocking Calls**: Detects blocking calls such as Thread.sleep, CompletableFuture.get, or synchronous I/O inside shared thread pools, which can exhaust all available threads and cause a full service outage.
+- **Unbounded Collection Growth**: Detects collections (caches, queues, lists) that grow without bounds and lack eviction policies.
+- **Unclosed Resources**: Detects file handles, database connections, streams, and sockets that are opened but never explicitly closed, leading to resource exhaustion under load.
+- **Unnecessary Boxing/Unboxing**: Detects unnecessary conversions between primitive types and their wrapper classes, which impacts performance and memory usage.
+- **Unoptimized Regular Expression**: Detects regular expressions that are compiled repeatedly instead of being cached, or patterns susceptible to catastrophic backtracking (ReDoS).
 
-### Maintainability (12 rules)
-- **Boolean Blindness**: Detects methods with multiple boolean parameters whose meaning is unclear at the call site
-- **Circular Dependencies**: Detects circular dependencies between packages, modules, or classes
-- **Deep Nesting**: Detects code with excessive nesting levels reducing readability
-- **Excessive Comments**: Detects redundant comments that explain what the code does rather than why
-- **Hardcoded URLs**: Detects hardcoded URLs and endpoints that should be externalized
-- **Hidden Dependencies**: Detects dependencies that are not explicit in method signatures
-- **Inconsistent Naming**: Detects variables and methods not following naming conventions
-- **Long Methods**: Flags methods exceeding length thresholds
-- **Missing Documentation**: Detects public APIs lacking proper documentation comments
-- **Missing Null Check**: Detects potential null pointer dereferences
-- **Shotgun Surgery**: Detects changes that require many small modifications across multiple classes
-- **Too Many Parameters**: Detects methods with excessive parameters
+### Maintainability (15 rules)
+- **Boolean Blindness**: Detects methods with multiple boolean parameters or return values whose meaning is unclear at the call site.
+- **Circular Dependencies Between Modules**: Detects circular dependencies between packages, modules, or classes where A depends on B and B depends on A (directly or transitively).
+- **Deeply Nested Code**: Detects code with excessive nesting levels (if statements, loops, try blocks), which reduces readability and increases cognitive complexity.
+- **Excessive or Redundant Comments**: Detects code with excessive comments that explain what the code does rather than why.
+- **Hardcoded URLs and Endpoints**: Detects hardcoded URLs, IP addresses, and endpoints that should be externalized to configuration files for better maintainability and environment flexibility.
+- **Hidden Dependencies**: Detects dependencies that are not explicit in method signatures, such as using global state, singletons, static method calls, or service locators.
+- **Inconsistent Naming Convention**: Detects variables, methods, and classes that don't follow established naming conventions (camelCase, PascalCase, SCREAMING_SNAKE_CASE), reducing code consistency.
+- **Method Length Limit**: Detects methods or functions that exceed a reasonable length threshold, making them harder to understand and maintain.
+- **Missing Documentation**: Detects public classes, methods, and interfaces that lack proper documentation comments, making the code harder to understand and use.
+- **Missing Null Check**: Detects potential null pointer dereferences where objects are used without proper null validation, leading to runtime NullPointerExceptions.
+- **Mutable Static State**: Detects mutable static fields that introduce global shared state, causing thread-safety issues, hidden dependencies, and making unit testing unreliable.
+- **Race Condition on Shared State**: Detects unsynchronized read-write access to shared mutable state across threads, causing intermittent data corruption and hard-to-reproduce bugs.
+- **Shotgun Surgery**: Detects changes that require many small modifications across multiple classes or modules.
+- **Swallowed Exceptions**: Detects catch blocks that silently discard exceptions without logging, rethrowing, or handling them, masking failures and making debugging extremely difficult.
+- **Too Many Method Parameters**: Detects methods or functions with too many parameters, which makes the code harder to understand and use.
 
 ## Rule Structure
 
