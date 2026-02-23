@@ -1,0 +1,29 @@
+{
+  "key": "swallowed-exceptions",
+  "name": "Swallowed Exceptions",
+  "description": "Detects catch blocks that silently discard exceptions without logging, rethrowing, or handling them, masking failures and making debugging extremely difficult.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["error-handling", "maintainability", "silent-failure"],
+  "remediation": {
+    "constantCost": "15min",
+    "examples": [
+      {
+        "before": "try {\n    orderService.processPayment(order);\n} catch (PaymentException e) {\n    // TODO: handle later\n}",
+        "after": "try {\n    orderService.processPayment(order);\n} catch (PaymentException e) {\n    logger.error(\"Payment processing failed for order {}\", order.getId(), e);\n    throw new OrderProcessingException(\"Payment failed\", e);\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "15min"
+  }
+}

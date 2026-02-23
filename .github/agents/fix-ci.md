@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Diagnose and fix CI pipeline failures for SonarQube rule validation. Understands the GitHub Actions workflow, validation steps, and how to resolve each failure mode.
-tools: ['read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search']
+tools: ['editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'read_file', 'replace_string_in_file', 'multi_replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search']
 ---
 
 # Fix CI Pipeline Failures

@@ -1,0 +1,29 @@
+{
+  "key": "jwt-misconfiguration",
+  "name": "JWT Signature Not Verified",
+  "description": "Detects JWT token parsing that skips signature verification or allows the 'none' algorithm, enabling attackers to forge authentication tokens.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "jwt", "authentication", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "Claims claims = Jwts.parser()\n    .parseClaimsJwt(token)\n    .getBody();",
+        "after": "Claims claims = Jwts.parser()\n    .setSigningKey(secretKey)\n    .parseClaimsJws(token)\n    .getBody();"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Create a new SonarQube rule definition file from the project template, with correct category placement, field validation, and formatting.
-tools: ['create_file', 'read_file', 'replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
+tools: ['editFiles', 'runInTerminal', 'readFile', 'listDirectory', 'create_file', 'read_file', 'replace_string_in_file', 'run_in_terminal', 'file_search', 'grep_search', 'semantic_search']
 ---
 
 # Create New SonarQube Rule

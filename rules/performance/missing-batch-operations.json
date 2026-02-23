@@ -1,0 +1,29 @@
+{
+  "key": "missing-batch-operations",
+  "name": "Missing Batch Operations",
+  "description": "Detects individual database or API calls executed inside loops instead of using batch or bulk operations, causing severe performance degradation under load.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["performance", "database", "batch", "scalability"],
+  "remediation": {
+    "constantCost": "45min",
+    "examples": [
+      {
+        "before": "for (User user : users) {\n    userRepository.save(user);\n}",
+        "after": "userRepository.saveAll(users);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "45min"
+  }
+}

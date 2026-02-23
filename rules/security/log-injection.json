@@ -1,0 +1,29 @@
+{
+  "key": "log-injection",
+  "name": "Log Injection",
+  "description": "Detects unsanitized user input written directly into log statements, enabling log forging, SIEM evasion, and potential remote code execution via logging frameworks.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "injection", "logging", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "String username = request.getParameter(\"username\");\nlogger.info(\"Login attempt for user: \" + username);",
+        "after": "String username = request.getParameter(\"username\");\nString sanitized = username.replaceAll(\"[\\\\r\\\\n]\", \"_\");\nlogger.info(\"Login attempt for user: {}\", sanitized);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "mutable-static-state",
+  "name": "Mutable Static State",
+  "description": "Detects mutable static fields that introduce global shared state, causing thread-safety issues, hidden dependencies, and making unit testing unreliable.",
+  "severity": "MAJOR",
+  "type": "CODE_SMELL",
+  "tags": ["maintainability", "concurrency", "testability", "global-state"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public class AppConfig {\n    public static Map<String, String> settings = new HashMap<>();\n}",
+        "after": "public class AppConfig {\n    private static final Map<String, String> SETTINGS =\n        Collections.unmodifiableMap(loadSettings());\n\n    public static Map<String, String> getSettings() {\n        return SETTINGS;\n    }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "MAINTAINABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "MAJOR",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}
