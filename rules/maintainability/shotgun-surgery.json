@@ -24,6 +24,7 @@
   "status": "READY",
   "debt": {
     "function": "LINEAR",
-    "coefficient": "20min"
+    "coefficient": "20min",
+    "offset": "0min"
   }
 }

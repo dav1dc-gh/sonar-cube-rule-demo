@@ -1,0 +1,17 @@
+{
+  "name": "sonarqube-rules",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SonarQube custom rule definitions with validation and catalog generation.",
+  "scripts": {
+    "validate": "node scripts/validate-rules.js",
+    "validate:verbose": "node scripts/validate-rules.js --verbose",
+    "catalog": "node scripts/generate-catalog.js",
+    "index": "node .github/skills/catalog-index-refresh/generate-index.js",
+    "audit": "node .github/skills/data-quality-audit/audit-rules.js",
+    "drift": "node .github/skills/custom-instructions-sync/detect-drift.js",
+    "check": "node scripts/validate-rules.js && node scripts/generate-catalog.js && node .github/skills/catalog-index-refresh/generate-index.js"
+  },
+  "keywords": ["sonarqube", "rules", "static-analysis"],
+  "license": "MIT"
+}

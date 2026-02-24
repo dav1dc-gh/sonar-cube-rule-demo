@@ -1,0 +1,91 @@
+name: Validate SonarQube Rules
+
+on:
+  push:
+    paths:
+      - 'rules/**'
+      - 'schema/**'
+      - 'scripts/validate-rules.js'
+  pull_request:
+    paths:
+      - 'rules/**'
+      - 'schema/**'
+      - 'scripts/validate-rules.js'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate rule definitions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate all rule JSON files are parseable
+        run: |
+          echo "Checking JSON syntax..."
+          find rules -name '*.json' -exec sh -c '
+            for f; do
+              if ! python3 -m json.tool "$f" > /dev/null 2>&1; then
+                echo "INVALID JSON: $f"
+                exit 1
+              fi
+            done
+          ' _ {} +
+          echo "✓ All JSON files are syntactically valid"
+
+      - name: Run rule validator
+        run: node scripts/validate-rules.js --verbose
+
+      - name: Verify key-filename consistency
+        run: |
+          errors=0
+          for f in rules/*/*.json; do
+            filename=$(basename "$f" .json)
+            key=$(python3 -c "import json; print(json.load(open('$f'))['key'])")
+            if [ "$filename" != "$key" ]; then
+              echo "MISMATCH: $f has key='$key' but filename='$filename'"
+              errors=$((errors + 1))
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            echo "✗ $errors key-filename mismatch(es) found"
+            exit 1
+          fi
+          echo "✓ All keys match filenames"
+
+  catalog:
+    name: Generate rules catalog
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate catalog
+        run: node scripts/generate-catalog.js
+
+      - name: Commit updated catalog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add RULES_CATALOG.md
+          if git diff --staged --quiet; then
+            echo "No catalog changes to commit"
+          else
+            git commit -m "docs: auto-update rules catalog [skip ci]"
+            git push
+          fi

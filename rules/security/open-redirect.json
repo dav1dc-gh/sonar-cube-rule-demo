@@ -4,7 +4,7 @@
   "description": "Detects when user-controlled input is used to construct redirect URLs without proper validation. Open redirects can be exploited by attackers to redirect users to malicious websites, facilitating phishing attacks and credential theft. Always validate and whitelist redirect destinations.",
   "severity": "CRITICAL",
   "type": "VULNERABILITY",
-  "tags": ["security", "owasp-top-10", "injection", "phishing"],
+  "tags": ["security", "owasp-top-10", "redirect", "phishing"],
   "remediation": {
     "constantCost": "30min",
     "examples": [

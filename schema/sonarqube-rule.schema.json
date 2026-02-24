@@ -1,0 +1,186 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/sonarqube-rule.schema.json",
+  "title": "SonarQube Rule Definition",
+  "description": "Schema for SonarQube custom rule definition files used in this repository.",
+  "type": "object",
+  "required": [
+    "key",
+    "name",
+    "description",
+    "severity",
+    "type",
+    "tags",
+    "remediation",
+    "impacts",
+    "defaultSeverity",
+    "status",
+    "debt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "description": "Unique kebab-case identifier. Must match the filename without the .json extension."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 120,
+      "description": "Human-readable rule name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Detailed explanation of what the rule detects and why it matters."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "INFO"],
+      "description": "Rule severity level."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["VULNERABILITY", "BUG", "CODE_SMELL"],
+      "description": "SonarQube rule type."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+      },
+      "minItems": 2,
+      "uniqueItems": true,
+      "description": "Categorization tags. Must include the category name (security, code-smells, performance, maintainability) as the first tag."
+    },
+    "remediation": {
+      "type": "object",
+      "required": ["constantCost", "examples"],
+      "additionalProperties": false,
+      "properties": {
+        "constantCost": {
+          "type": "string",
+          "pattern": "^[0-9]+(min|h|d)$",
+          "description": "Estimated time to fix a single instance (e.g., '30min', '1h')."
+        },
+        "examples": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["before", "after"],
+            "additionalProperties": false,
+            "properties": {
+              "before": {
+                "type": "string",
+                "minLength": 5,
+                "description": "Code example demonstrating the problem."
+              },
+              "after": {
+                "type": "string",
+                "minLength": 5,
+                "description": "Code example demonstrating the fix."
+              }
+            }
+          }
+        }
+      }
+    },
+    "impacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["softwareQuality", "severity"],
+        "additionalProperties": false,
+        "properties": {
+          "softwareQuality": {
+            "type": "string",
+            "enum": ["SECURITY", "MAINTAINABILITY", "RELIABILITY"],
+            "description": "The software quality attribute affected."
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["HIGH", "MEDIUM", "LOW"],
+            "description": "Impact severity on the quality attribute."
+          }
+        }
+      }
+    },
+    "defaultSeverity": {
+      "type": "string",
+      "enum": ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "INFO"],
+      "description": "Default severity when imported. Must match the 'severity' field."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["READY", "BETA", "DEPRECATED"],
+      "description": "Rule lifecycle status."
+    },
+    "debt": {
+      "type": "object",
+      "required": ["function"],
+      "additionalProperties": false,
+      "properties": {
+        "function": {
+          "type": "string",
+          "enum": ["CONSTANT_ISSUE", "LINEAR"],
+          "description": "Debt calculation function."
+        },
+        "offset": {
+          "type": "string",
+          "pattern": "^[0-9]+(min|h|d)$",
+          "description": "Fixed offset for CONSTANT_ISSUE or base offset for LINEAR."
+        },
+        "coefficient": {
+          "type": "string",
+          "pattern": "^[0-9]+(min|h|d)$",
+          "description": "Per-unit coefficient for LINEAR debt function."
+        }
+      },
+      "if": {
+        "properties": { "function": { "const": "CONSTANT_ISSUE" } }
+      },
+      "then": {
+        "required": ["function", "offset"]
+      },
+      "else": {
+        "required": ["function", "coefficient"]
+      }
+    },
+    "params": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "name", "description", "defaultValue", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]*$",
+            "description": "Parameter identifier (camelCase)."
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable parameter name."
+          },
+          "description": {
+            "type": "string",
+            "description": "What the parameter controls."
+          },
+          "defaultValue": {
+            "type": "string",
+            "description": "Default value as a string."
+          },
+          "type": {
+            "type": "string",
+            "enum": ["INTEGER", "STRING", "BOOLEAN", "FLOAT", "TEXT"],
+            "description": "Parameter data type."
+          }
+        }
+      }
+    }
+  }
+}

@@ -148,6 +148,69 @@ Each rule file contains:
 
 These rule definitions can be imported into SonarQube custom rule plugins or used as reference for creating custom quality profiles.
 
+### Scripts
+
+| Command | Description |
+|---|---|
+| `npm run validate` | Validate all rule JSON files against the schema and conventions |
+| `npm run validate:verbose` | Same as above with per-file pass/fail output |
+| `npm run catalog` | Regenerate `RULES_CATALOG.md` from rule files |
+| `npm run index` | Generate `rules/index.json` machine-readable index |
+| `npm run audit` | Run deep quality audit (duplicates, tag issues, cost outliers) |
+| `npm run drift` | Detect drift between rule files and copilot instructions |
+| `npm run check` | Validate + catalog + index in one command |
+
+## Copilot Agents
+
+This repository includes three custom Copilot agents in `.github/agents/` that automate routine operations. Select them from the Copilot agent dropdown in your IDE or on GitHub.com.
+
+### Rule Author (`@rule-author`)
+
+Creates new SonarQube rule files with full validation and artifact refresh.
+
+- **When to use**: Adding a new rule to the repository
+- **What it does**: Guides you through category selection, checks for duplicates, generates the JSON file, validates it, refreshes the catalog/index, and syncs instructions
+- **Tools**: read, edit, search, execute
+- **Example prompts**:
+  - "Create a new rule for detecting insecure TLS configurations"
+  - "Add a performance rule for detecting excessive database connections"
+
+### Repo Auditor (`@repo-auditor`)
+
+Read-only agent that audits all rules for quality and consistency issues.
+
+- **When to use**: Routine quality checks, before releases, or after batch imports
+- **What it does**: Runs the audit script, schema validation, and drift detection, then presents a structured report with errors, warnings, and suggestions
+- **Tools**: read, search, execute (no edit — intentionally read-only)
+- **Example prompts**:
+  - "Run a quality audit on all rules"
+  - "Check if anything is out of sync"
+
+### Repo Maintainer (`@repo-maintainer`)
+
+Fixes audit findings, regenerates artifacts, and syncs documentation.
+
+- **When to use**: Regular upkeep, after batch changes, or to fix issues flagged by the auditor
+- **What it does**: Runs diagnostics → proposes fixes with confirmation → regenerates catalog/index → syncs instructions → verifies clean state
+- **Tools**: read, edit, search, execute
+- **Example prompts**:
+  - "Fix all the issues from the last audit"
+  - "Refresh everything after my recent changes"
+  - "Sync the custom instructions with current rules"
+
+## Copilot Skills
+
+The agents are powered by four reusable skills in `.github/skills/`:
+
+| Skill | Description | Key Script |
+|---|---|---|
+| `rule-creation-wizard` | Guided new rule creation workflow | `validate-new-rule.sh` |
+| `data-quality-audit` | Deep consistency analysis | `audit-rules.js` |
+| `catalog-index-refresh` | Catalog and index regeneration | `generate-index.js` |
+| `custom-instructions-sync` | Drift detection and instruction updates | `detect-drift.js` |
+
+Skills auto-activate when Copilot detects a relevant task. Agents compose these skills into end-to-end workflows.
+
 ## Contributing
 
 When adding new rules:

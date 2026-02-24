@@ -1,0 +1,886 @@
+[
+  {
+    "key": "complex-methods",
+    "name": "High Cyclomatic Complexity",
+    "category": "code-smells",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "complexity",
+      "maintainability",
+      "testing"
+    ],
+    "status": "READY",
+    "paramCount": 1,
+    "remediationCost": "30min",
+    "file": "rules/code-smells/complex-methods.json"
+  },
+  {
+    "key": "data-clumps",
+    "name": "Data Clumps",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "refactoring",
+      "cohesion"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/code-smells/data-clumps.json"
+  },
+  {
+    "key": "dead-code",
+    "name": "Dead Code Detection",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "unused",
+      "cleanup",
+      "maintainability"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "5min",
+    "file": "rules/code-smells/dead-code.json"
+  },
+  {
+    "key": "duplicate-code",
+    "name": "Duplicate Code Blocks",
+    "category": "code-smells",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "duplication",
+      "maintainability",
+      "dry-principle"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "15min",
+    "file": "rules/code-smells/duplicate-code.json"
+  },
+  {
+    "key": "empty-catch-block",
+    "name": "Empty Catch Block",
+    "category": "code-smells",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "error-handling",
+      "exceptions",
+      "debugging"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/code-smells/empty-catch-block.json"
+  },
+  {
+    "key": "feature-envy",
+    "name": "Feature Envy",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "refactoring",
+      "oop"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/code-smells/feature-envy.json"
+  },
+  {
+    "key": "god-class",
+    "name": "God Class Detection",
+    "category": "code-smells",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "solid",
+      "maintainability"
+    ],
+    "status": "READY",
+    "paramCount": 2,
+    "remediationCost": "4h",
+    "file": "rules/code-smells/god-class.json"
+  },
+  {
+    "key": "long-parameter-list",
+    "name": "Long Parameter List",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "refactoring",
+      "readability"
+    ],
+    "status": "READY",
+    "paramCount": 1,
+    "remediationCost": "30min",
+    "file": "rules/code-smells/long-parameter-list.json"
+  },
+  {
+    "key": "magic-numbers",
+    "name": "Avoid Magic Numbers",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "readability",
+      "maintainability"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "5min",
+    "file": "rules/code-smells/magic-numbers.json"
+  },
+  {
+    "key": "message-chains",
+    "name": "Message Chains (Law of Demeter Violation)",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "coupling",
+      "law-of-demeter"
+    ],
+    "status": "READY",
+    "paramCount": 1,
+    "remediationCost": "20min",
+    "file": "rules/code-smells/message-chains.json"
+  },
+  {
+    "key": "primitive-obsession",
+    "name": "Primitive Obsession",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "domain-driven-design",
+      "refactoring"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/code-smells/primitive-obsession.json"
+  },
+  {
+    "key": "refused-bequest",
+    "name": "Refused Bequest",
+    "category": "code-smells",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "solid",
+      "inheritance",
+      "lsp"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "45min",
+    "file": "rules/code-smells/refused-bequest.json"
+  },
+  {
+    "key": "speculative-generality",
+    "name": "Speculative Generality",
+    "category": "code-smells",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "code-smell",
+      "design",
+      "yagni",
+      "refactoring"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/code-smells/speculative-generality.json"
+  },
+  {
+    "key": "boolean-blindness",
+    "name": "Boolean Blindness",
+    "category": "maintainability",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "readability",
+      "api-design",
+      "clean-code"
+    ],
+    "status": "READY",
+    "paramCount": 1,
+    "remediationCost": "25min",
+    "file": "rules/maintainability/boolean-blindness.json"
+  },
+  {
+    "key": "circular-dependencies",
+    "name": "Circular Dependencies Between Modules",
+    "category": "maintainability",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "design",
+      "architecture",
+      "coupling"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "60min",
+    "file": "rules/maintainability/circular-dependencies.json"
+  },
+  {
+    "key": "deep-nesting",
+    "name": "Deeply Nested Code",
+    "category": "maintainability",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "complexity",
+      "readability",
+      "refactoring"
+    ],
+    "status": "READY",
+    "paramCount": 1,
+    "remediationCost": "20min",
+    "file": "rules/maintainability/deep-nesting.json"
+  },
+  {
+    "key": "excessive-comments",
+    "name": "Excessive or Redundant Comments",
+    "category": "maintainability",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "documentation",
+      "readability",
+      "clean-code"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "15min",
+    "file": "rules/maintainability/excessive-comments.json"
+  },
+  {
+    "key": "hardcoded-urls",
+    "name": "Hardcoded URLs and Endpoints",
+    "category": "maintainability",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "configuration",
+      "deployment",
+      "best-practices"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/maintainability/hardcoded-urls.json"
+  },
+  {
+    "key": "hidden-dependencies",
+    "name": "Hidden Dependencies",
+    "category": "maintainability",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "design",
+      "testability",
+      "dependency-injection"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/maintainability/hidden-dependencies.json"
+  },
+  {
+    "key": "inconsistent-naming",
+    "name": "Inconsistent Naming Convention",
+    "category": "maintainability",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "naming",
+      "conventions",
+      "readability"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "5min",
+    "file": "rules/maintainability/inconsistent-naming.json"
+  },
+  {
+    "key": "long-methods",
+    "name": "Method Length Limit",
+    "category": "maintainability",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "readability",
+      "method-length"
+    ],
+    "status": "READY",
+    "paramCount": 1,
+    "remediationCost": "2min",
+    "file": "rules/maintainability/long-methods.json"
+  },
+  {
+    "key": "missing-javadoc",
+    "name": "Missing Documentation",
+    "category": "maintainability",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "documentation",
+      "javadoc",
+      "readability"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/maintainability/missing-javadoc.json"
+  },
+  {
+    "key": "missing-null-check",
+    "name": "Missing Null Check",
+    "category": "maintainability",
+    "severity": "MAJOR",
+    "type": "BUG",
+    "tags": [
+      "maintainability",
+      "null-safety",
+      "defensive-programming",
+      "reliability"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/maintainability/missing-null-check.json"
+  },
+  {
+    "key": "shotgun-surgery",
+    "name": "Shotgun Surgery",
+    "category": "maintainability",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "design",
+      "cohesion",
+      "refactoring"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "60min",
+    "file": "rules/maintainability/shotgun-surgery.json"
+  },
+  {
+    "key": "too-many-parameters",
+    "name": "Too Many Method Parameters",
+    "category": "maintainability",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "maintainability",
+      "readability",
+      "parameters",
+      "design"
+    ],
+    "status": "READY",
+    "paramCount": 1,
+    "remediationCost": "15min",
+    "file": "rules/maintainability/too-many-parameters.json"
+  },
+  {
+    "key": "connection-pool-exhaustion",
+    "name": "Connection Pool Exhaustion Risk",
+    "category": "performance",
+    "severity": "CRITICAL",
+    "type": "BUG",
+    "tags": [
+      "performance",
+      "database",
+      "resource-leak",
+      "connection-pool"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/performance/connection-pool-exhaustion.json"
+  },
+  {
+    "key": "excessive-object-creation",
+    "name": "Excessive Object Creation in Hot Path",
+    "category": "performance",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "memory",
+      "gc",
+      "optimization"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/performance/excessive-object-creation.json"
+  },
+  {
+    "key": "inefficient-collection-usage",
+    "name": "Inefficient Collection Usage",
+    "category": "performance",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "collections",
+      "data-structures",
+      "optimization"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/performance/inefficient-collection-usage.json"
+  },
+  {
+    "key": "inefficient-loops",
+    "name": "Inefficient Loop Operations",
+    "category": "performance",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "optimization",
+      "loops"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/performance/inefficient-loops.json"
+  },
+  {
+    "key": "memory-leaks",
+    "name": "Potential Memory Leak Detection",
+    "category": "performance",
+    "severity": "CRITICAL",
+    "type": "BUG",
+    "tags": [
+      "performance",
+      "memory",
+      "resource-management"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/performance/memory-leaks.json"
+  },
+  {
+    "key": "missing-lazy-initialization",
+    "name": "Missing Lazy Initialization",
+    "category": "performance",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "memory",
+      "initialization",
+      "optimization"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/performance/missing-lazy-initialization.json"
+  },
+  {
+    "key": "n-plus-one-query",
+    "name": "N+1 Query Problem",
+    "category": "performance",
+    "severity": "CRITICAL",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "database",
+      "orm",
+      "optimization"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/performance/n-plus-one-query.json"
+  },
+  {
+    "key": "string-concatenation-in-loop",
+    "name": "String Concatenation in Loop",
+    "category": "performance",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "memory",
+      "strings",
+      "optimization"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/performance/string-concatenation-in-loop.json"
+  },
+  {
+    "key": "synchronous-io-in-async",
+    "name": "Synchronous I/O in Async Context",
+    "category": "performance",
+    "severity": "MAJOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "async",
+      "reactive",
+      "concurrency"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/performance/synchronous-io-in-async.json"
+  },
+  {
+    "key": "unbounded-collection-growth",
+    "name": "Unbounded Collection Growth",
+    "category": "performance",
+    "severity": "CRITICAL",
+    "type": "BUG",
+    "tags": [
+      "performance",
+      "memory",
+      "memory-leak",
+      "cache"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "45min",
+    "file": "rules/performance/unbounded-collection-growth.json"
+  },
+  {
+    "key": "unnecessary-boxing",
+    "name": "Unnecessary Boxing/Unboxing",
+    "category": "performance",
+    "severity": "MINOR",
+    "type": "CODE_SMELL",
+    "tags": [
+      "performance",
+      "memory",
+      "primitives",
+      "optimization"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "5min",
+    "file": "rules/performance/unnecessary-boxing.json"
+  },
+  {
+    "key": "unoptimized-regex",
+    "name": "Unoptimized Regular Expression",
+    "category": "performance",
+    "severity": "CRITICAL",
+    "type": "BUG",
+    "tags": [
+      "performance",
+      "regex",
+      "redos",
+      "security"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/performance/unoptimized-regex.json"
+  },
+  {
+    "key": "command-injection",
+    "name": "Command Injection Vulnerability",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "injection",
+      "owasp-top-10",
+      "command-execution"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/security/command-injection.json"
+  },
+  {
+    "key": "csrf-vulnerability",
+    "name": "Cross-Site Request Forgery (CSRF)",
+    "category": "security",
+    "severity": "MAJOR",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "csrf",
+      "owasp-top-10",
+      "web"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/security/csrf-vulnerability.json"
+  },
+  {
+    "key": "hardcoded-credentials",
+    "name": "Hardcoded Credentials Detection",
+    "category": "security",
+    "severity": "BLOCKER",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "credentials",
+      "secrets",
+      "owasp-top-10"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "15min",
+    "file": "rules/security/hardcoded-credentials.json"
+  },
+  {
+    "key": "insecure-cookie",
+    "name": "Insecure Cookie Configuration",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "owasp-top-10",
+      "cookies",
+      "session-management"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "15min",
+    "file": "rules/security/insecure-cookie.json"
+  },
+  {
+    "key": "insecure-deserialization",
+    "name": "Insecure Deserialization",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "deserialization",
+      "owasp-top-10",
+      "rce"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "45min",
+    "file": "rules/security/insecure-deserialization.json"
+  },
+  {
+    "key": "insecure-random",
+    "name": "Insecure Random Number Generator",
+    "category": "security",
+    "severity": "MAJOR",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "random",
+      "cryptography",
+      "tokens"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "10min",
+    "file": "rules/security/insecure-random.json"
+  },
+  {
+    "key": "ldap-injection",
+    "name": "LDAP Injection Vulnerability",
+    "category": "security",
+    "severity": "BLOCKER",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "owasp-top-10",
+      "injection",
+      "ldap",
+      "authentication"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "45min",
+    "file": "rules/security/ldap-injection.json"
+  },
+  {
+    "key": "open-redirect",
+    "name": "Open Redirect Vulnerability",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "owasp-top-10",
+      "redirect",
+      "phishing"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/security/open-redirect.json"
+  },
+  {
+    "key": "path-traversal",
+    "name": "Path Traversal Vulnerability",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "path-traversal",
+      "owasp-top-10",
+      "file-access"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/security/path-traversal.json"
+  },
+  {
+    "key": "sensitive-data-exposure",
+    "name": "Sensitive Data Exposure in Logs",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "logging",
+      "pii",
+      "gdpr",
+      "owasp-top-10"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "15min",
+    "file": "rules/security/sensitive-data-exposure.json"
+  },
+  {
+    "key": "server-side-request-forgery",
+    "name": "Server-Side Request Forgery (SSRF)",
+    "category": "security",
+    "severity": "BLOCKER",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "owasp-top-10",
+      "ssrf",
+      "network"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "45min",
+    "file": "rules/security/server-side-request-forgery.json"
+  },
+  {
+    "key": "sql-injection",
+    "name": "SQL Injection Prevention",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "sql",
+      "injection",
+      "owasp-top-10"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "30min",
+    "file": "rules/security/sql-injection.json"
+  },
+  {
+    "key": "weak-cryptography",
+    "name": "Weak Cryptographic Algorithm",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "cryptography",
+      "encryption",
+      "owasp-top-10"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/security/weak-cryptography.json"
+  },
+  {
+    "key": "xml-external-entity",
+    "name": "XML External Entity (XXE) Injection",
+    "category": "security",
+    "severity": "BLOCKER",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "owasp-top-10",
+      "injection",
+      "xxe",
+      "xml"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/security/xml-external-entity.json"
+  },
+  {
+    "key": "xss-vulnerability",
+    "name": "Cross-Site Scripting (XSS) Prevention",
+    "category": "security",
+    "severity": "CRITICAL",
+    "type": "VULNERABILITY",
+    "tags": [
+      "security",
+      "xss",
+      "cross-site-scripting",
+      "owasp-top-10"
+    ],
+    "status": "READY",
+    "paramCount": 0,
+    "remediationCost": "20min",
+    "file": "rules/security/xss-vulnerability.json"
+  }
+]
