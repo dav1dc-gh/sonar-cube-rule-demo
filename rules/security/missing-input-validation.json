@@ -1,0 +1,37 @@
+{
+  "key": "missing-input-validation",
+  "name": "Missing Input Validation",
+  "description": "Detects user-supplied input used in business logic without validation for type, range, size, or format. This is the root cause of most injection and data-corruption vulnerabilities.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "validation", "input", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "@PostMapping(\"/users\")\npublic ResponseEntity<User> createUser(@RequestBody UserDto dto) {\n  User user = new User();\n  user.setEmail(dto.getEmail()); // no validation\n  user.setAge(dto.getAge());     // no range check\n  return ResponseEntity.ok(userRepo.save(user));\n}",
+        "after": "@PostMapping(\"/users\")\npublic ResponseEntity<User> createUser(@RequestBody @Valid UserDto dto) {\n  User user = new User();\n  user.setEmail(dto.getEmail()); // @Email constraint on field\n  user.setAge(dto.getAge());     // @Min(0) @Max(150) on field\n  return ResponseEntity.ok(userRepo.save(user));\n}"
+      },
+      {
+        "before": "app.post('/register', (req, res) => {\n  const { username, age } = req.body;\n  db.query('INSERT INTO users VALUES (?, ?)', [username, age]);\n});",
+        "after": "app.post('/register', (req, res) => {\n  const { username, age } = req.body;\n  if (typeof username !== 'string' || username.length > 64) {\n    return res.status(400).json({ error: 'Invalid username' });\n  }\n  if (!Number.isInteger(age) || age < 0 || age > 150) {\n    return res.status(400).json({ error: 'Invalid age' });\n  }\n  db.query('INSERT INTO users VALUES (?, ?)', [username, age]);\n});"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    },
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "MEDIUM"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

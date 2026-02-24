@@ -1,0 +1,33 @@
+{
+  "key": "improper-error-disclosure",
+  "name": "Improper Error Disclosure",
+  "description": "Detects error handling that exposes stack traces, database details, or internal paths to end users, enabling attacker reconnaissance and information leakage.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "error-handling", "information-disclosure", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "20min",
+    "examples": [
+      {
+        "before": "@ExceptionHandler(Exception.class)\npublic ResponseEntity<String> handleError(Exception ex) {\n  return ResponseEntity.status(500)\n    .body(ex.getMessage() + \"\\n\" + Arrays.toString(ex.getStackTrace()));\n}",
+        "after": "@ExceptionHandler(Exception.class)\npublic ResponseEntity<Map<String, String>> handleError(Exception ex) {\n  log.error(\"Unhandled exception\", ex);\n  return ResponseEntity.status(500)\n    .body(Map.of(\"error\", \"An internal error occurred. Please try again later.\"));\n}"
+      },
+      {
+        "before": "app.use((err, req, res, next) => {\n  res.status(500).json({\n    message: err.message,\n    stack: err.stack,\n    query: err.sql\n  });\n});",
+        "after": "app.use((err, req, res, next) => {\n  console.error('Unhandled error:', err);\n  res.status(500).json({\n    message: 'An internal error occurred.'\n  });\n});"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "20min"
+  }
+}

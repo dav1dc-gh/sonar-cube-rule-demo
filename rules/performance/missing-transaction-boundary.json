@@ -1,0 +1,33 @@
+{
+  "key": "missing-transaction-boundary",
+  "name": "Missing Transaction Boundary",
+  "description": "Detects multiple related database operations executed without an explicit transaction, risking partial writes, data corruption, and inconsistent state on failure.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["database", "transactions", "data-integrity", "reliability"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "public void transferFunds(Long fromId, Long toId, BigDecimal amount) {\n  Account from = accountRepo.findById(fromId).orElseThrow();\n  Account to = accountRepo.findById(toId).orElseThrow();\n  from.debit(amount);\n  accountRepo.save(from);  // persisted\n  to.credit(amount);\n  accountRepo.save(to);    // may fail — funds lost\n}",
+        "after": "@Transactional\npublic void transferFunds(Long fromId, Long toId, BigDecimal amount) {\n  Account from = accountRepo.findById(fromId).orElseThrow();\n  Account to = accountRepo.findById(toId).orElseThrow();\n  from.debit(amount);\n  accountRepo.save(from);\n  to.credit(amount);\n  accountRepo.save(to);    // atomic — both succeed or both roll back\n}"
+      },
+      {
+        "before": "async function createOrder(userId, items) {\n  const order = await db.query('INSERT INTO orders (...) VALUES (...)');\n  for (const item of items) {\n    await db.query('INSERT INTO order_items (...) VALUES (...)');\n  }\n  await db.query('UPDATE inventory SET stock = stock - ? WHERE id = ?', ...);\n}",
+        "after": "async function createOrder(userId, items) {\n  const client = await db.connect();\n  try {\n    await client.query('BEGIN');\n    const order = await client.query('INSERT INTO orders (...) VALUES (...)');\n    for (const item of items) {\n      await client.query('INSERT INTO order_items (...) VALUES (...)');\n    }\n    await client.query('UPDATE inventory SET stock = stock - ? WHERE id = ?', ...);\n    await client.query('COMMIT');\n  } catch (err) {\n    await client.query('ROLLBACK');\n    throw err;\n  } finally {\n    client.release();\n  }\n}"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

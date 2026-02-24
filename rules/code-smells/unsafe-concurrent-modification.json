@@ -1,0 +1,33 @@
+{
+  "key": "unsafe-concurrent-modification",
+  "name": "Unsafe Concurrent Modification",
+  "description": "Detects modification of a collection while iterating over it, which causes ConcurrentModificationException or undefined behavior and is a leading cause of production crashes.",
+  "severity": "CRITICAL",
+  "type": "BUG",
+  "tags": ["bug", "concurrency", "collections", "reliability"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "List<String> items = new ArrayList<>(List.of(\"a\", \"b\", \"c\"));\nfor (String item : items) {\n  if (item.equals(\"b\")) {\n    items.remove(item); // ConcurrentModificationException\n  }\n}",
+        "after": "List<String> items = new ArrayList<>(List.of(\"a\", \"b\", \"c\"));\nIterator<String> it = items.iterator();\nwhile (it.hasNext()) {\n  if (it.next().equals(\"b\")) {\n    it.remove(); // Safe removal via iterator\n  }\n}"
+      },
+      {
+        "before": "Map<String, Integer> map = new HashMap<>();\nmap.put(\"x\", 1);\nmap.put(\"y\", 2);\nfor (String key : map.keySet()) {\n  if (map.get(key) < 2) {\n    map.remove(key); // ConcurrentModificationException\n  }\n}",
+        "after": "Map<String, Integer> map = new HashMap<>();\nmap.put(\"x\", 1);\nmap.put(\"y\", 2);\nmap.entrySet().removeIf(entry -> entry.getValue() < 2);"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}

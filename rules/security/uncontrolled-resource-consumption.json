@@ -1,0 +1,37 @@
+{
+  "key": "uncontrolled-resource-consumption",
+  "name": "Uncontrolled Resource Consumption",
+  "description": "Detects missing limits on request body size, file uploads, or loop iterations driven by user input, enabling denial-of-service through memory or CPU exhaustion.",
+  "severity": "CRITICAL",
+  "type": "VULNERABILITY",
+  "tags": ["security", "denial-of-service", "resource-management", "owasp-top-10"],
+  "remediation": {
+    "constantCost": "30min",
+    "examples": [
+      {
+        "before": "@PostMapping(\"/upload\")\npublic ResponseEntity<String> upload(@RequestParam MultipartFile file) {\n  byte[] content = file.getBytes(); // no size limit\n  storageService.store(content);\n  return ResponseEntity.ok(\"Uploaded\");\n}",
+        "after": "private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB\n\n@PostMapping(\"/upload\")\npublic ResponseEntity<String> upload(@RequestParam MultipartFile file) {\n  if (file.getSize() > MAX_FILE_SIZE) {\n    return ResponseEntity.status(413).body(\"File too large\");\n  }\n  byte[] content = file.getBytes();\n  storageService.store(content);\n  return ResponseEntity.ok(\"Uploaded\");\n}"
+      },
+      {
+        "before": "app.post('/process', (req, res) => {\n  const items = req.body.items; // unbounded array from user\n  items.forEach(item => expensiveOperation(item));\n  res.json({ status: 'done' });\n});",
+        "after": "const MAX_ITEMS = 1000;\n\napp.post('/process', (req, res) => {\n  const items = req.body.items;\n  if (!Array.isArray(items) || items.length > MAX_ITEMS) {\n    return res.status(400).json({ error: `Maximum ${MAX_ITEMS} items allowed` });\n  }\n  items.forEach(item => expensiveOperation(item));\n  res.json({ status: 'done' });\n});"
+      }
+    ]
+  },
+  "impacts": [
+    {
+      "softwareQuality": "SECURITY",
+      "severity": "HIGH"
+    },
+    {
+      "softwareQuality": "RELIABILITY",
+      "severity": "HIGH"
+    }
+  ],
+  "defaultSeverity": "CRITICAL",
+  "status": "READY",
+  "debt": {
+    "function": "CONSTANT_ISSUE",
+    "offset": "30min"
+  }
+}
