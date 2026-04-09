@@ -1,0 +1,1 @@
+is there a way to evaluate the performance impact of all the custom instructions, skills, and agent definitions - basically can you tell me if I have too much clutter and it's impacting performance of the AI assistant?
