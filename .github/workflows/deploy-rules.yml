@@ -1,0 +1,49 @@
+name: Deploy Rules to SonarQube
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (preview only, no changes)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+  workflow_run:
+    workflows: ["Validate SonarQube Rules"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy Rule Definitions
+    runs-on: ubuntu-latest
+    # Only run if triggered manually OR if the validation workflow succeeded
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate rules before deploy
+        run: python3 scripts/validate-rules.py --strict
+
+      - name: Deploy rules to SonarQube
+        env:
+          SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
+          SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONARQUBE_TEMPLATE_KEY: ${{ secrets.SONARQUBE_TEMPLATE_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            python3 scripts/deploy-rules.py --dry-run
+          else
+            python3 scripts/deploy-rules.py
+          fi

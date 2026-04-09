@@ -1,0 +1,1 @@
+Please add a CI pipeline to this project
