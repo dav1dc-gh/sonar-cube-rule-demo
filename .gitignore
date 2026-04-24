@@ -1,0 +1,297 @@
+# =============================================================================
+# .gitignore — Secrets & Credentials Protection
+# =============================================================================
+# Goal: prevent any file that might contain passwords, API keys, tokens,
+# certificates, or other secrets from ever being committed to Git.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Environment / dotenv files
+# -----------------------------------------------------------------------------
+.env
+.env.*
+*.env
+.envrc
+.passwd.env
+.password.env
+.secret.env
+.secrets.env
+
+# Allow sample/template env files (these should NOT contain real secrets)
+!.env.example
+!.env.sample
+!.env.template
+!*.env.example
+!*.env.sample
+!*.env.template
+
+# -----------------------------------------------------------------------------
+# Password / credential / secret files
+# -----------------------------------------------------------------------------
+passwords.db
+passwords.*
+password.*
+*.passwd
+*.password
+*.passwords
+passwd
+shadow
+htpasswd
+.htpasswd
+
+secrets.*
+*.secret
+*.secrets
+secrets.json
+secrets.yml
+secrets.yaml
+secrets.toml
+
+credentials
+credentials.*
+*.credentials
+.credentials/
+.aws/credentials
+.aws/config
+
+# Generic "config with secrets" patterns
+*.local
+*.private
+*.private.*
+local.settings.json
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Secrets.json
+
+# -----------------------------------------------------------------------------
+# Tokens / API keys
+# -----------------------------------------------------------------------------
+*.token
+*.tokens
+.token
+api_keys.*
+apikeys.*
+*.apikey
+.npmrc
+.pypirc
+.netrc
+
+# -----------------------------------------------------------------------------
+# Cryptographic keys & certificates
+# -----------------------------------------------------------------------------
+*.pem
+*.key
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.cer
+*.crt
+*.der
+*.csr
+*.asc
+*.gpg
+*.pgp
+id_rsa
+id_rsa.*
+id_dsa
+id_dsa.*
+id_ecdsa
+id_ecdsa.*
+id_ed25519
+id_ed25519.*
+*.ppk
+known_hosts
+authorized_keys
+
+# -----------------------------------------------------------------------------
+# Cloud / deployment provider secrets
+# -----------------------------------------------------------------------------
+.aws/
+.azure/
+.gcp/
+gcloud-service-key.json
+service-account*.json
+firebase-adminsdk*.json
+*.kubeconfig
+kubeconfig
+.kube/config
+terraform.tfvars
+*.auto.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# -----------------------------------------------------------------------------
+# Database files (often contain user data / hashed passwords)
+# -----------------------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.bak
+*.dump
+*.sql.gz
+
+# -----------------------------------------------------------------------------
+# IDE / editor files that may cache credentials
+# -----------------------------------------------------------------------------
+.idea/dataSources.local.xml
+.idea/dataSources/
+.vscode/settings.json
+.vscode/*.local.json
+
+# -----------------------------------------------------------------------------
+# OS junk
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------------------------------------------------------
+# Logs (can leak secrets in stack traces / request dumps)
+# -----------------------------------------------------------------------------
+*.log
+logs/
+
+# =============================================================================
+# Binary / non-text files
+# -----------------------------------------------------------------------------
+# Git can store these, but it can't meaningfully diff or merge them. They also
+# bloat the repo. Use Git LFS or an artifact store if you truly need them.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Archives & compressed files
+# -----------------------------------------------------------------------------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tbz2
+*.tar.xz
+*.txz
+*.tar.zst
+*.gz
+*.bz2
+*.xz
+*.zst
+*.7z
+*.rar
+*.lz
+*.lzma
+*.cab
+*.arj
+*.ace
+
+# -----------------------------------------------------------------------------
+# Executables & installers
+# -----------------------------------------------------------------------------
+*.exe
+*.msi
+*.msix
+*.appx
+*.app
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.apk
+*.ipa
+*.bin
+*.run
+*.com
+*.bat.exe
+
+# -----------------------------------------------------------------------------
+# Compiled libraries & object files
+# -----------------------------------------------------------------------------
+*.dll
+*.so
+*.so.*
+*.dylib
+*.a
+*.lib
+*.o
+*.obj
+*.exp
+*.pdb
+*.ilk
+*.ko
+
+# -----------------------------------------------------------------------------
+# Compiled bytecode / language artifacts
+# -----------------------------------------------------------------------------
+*.class
+*.jar
+*.war
+*.ear
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.beam
+*.elc
+
+# -----------------------------------------------------------------------------
+# Disk images & ISOs
+# -----------------------------------------------------------------------------
+*.iso
+*.img
+*.vhd
+*.vhdx
+*.vmdk
+*.qcow2
+*.ova
+*.ovf
+
+# -----------------------------------------------------------------------------
+# Media (images / audio / video / fonts)
+# Note: comment out individual lines if your project legitimately tracks these.
+# -----------------------------------------------------------------------------
+*.psd
+*.ai
+*.sketch
+*.fig
+*.tif
+*.tiff
+*.raw
+*.heic
+*.bmp
+
+*.mp3
+*.wav
+*.flac
+*.aac
+*.ogg
+*.m4a
+*.wma
+
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wmv
+*.flv
+*.webm
+
+# -----------------------------------------------------------------------------
+# Build / dependency / cache directories
+# -----------------------------------------------------------------------------
+node_modules/
+bower_components/
+vendor/
+dist/
+build/
+out/
+target/
+bin/
+obj/
+.cache/
+.gradle/
+.next/
+.nuxt/
+.parcel-cache/
+.turbo/
+.svelte-kit/
+coverage/
