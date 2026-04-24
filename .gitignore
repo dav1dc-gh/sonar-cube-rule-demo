@@ -278,7 +278,7 @@ __pycache__/
 # -----------------------------------------------------------------------------
 # Build / dependency / cache directories
 # -----------------------------------------------------------------------------
-node_modules/
+node_modules/3
 bower_components/
 vendor/
 dist/
