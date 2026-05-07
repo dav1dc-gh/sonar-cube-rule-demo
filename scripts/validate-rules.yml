@@ -34,6 +34,14 @@ jobs:
       - name: Strict validation (warnings → errors)
         run: python3 scripts/validate-rules.py --strict
 
+      - name: Verify rules/INDEX.md is current
+        run: |
+          python3 scripts/validate-rules.py --write-index
+          if ! git diff --exit-code rules/INDEX.md; then
+            echo "::error::rules/INDEX.md is out of date. Run: python3 scripts/validate-rules.py --write-index"
+            exit 1
+          fi
+
       - name: Verify JSON formatting (2-space indent)
         run: |
           FAIL=0
