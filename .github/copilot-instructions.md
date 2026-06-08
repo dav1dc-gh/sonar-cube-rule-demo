@@ -70,4 +70,4 @@ Required fields: `key`, `name`, `description`, `severity` (BLOCKER|CRITICAL|MAJO
 
 ## Lessons Learned Tracking
 
-After changes/research/tasks, append to `AI-HISTORY.md`: Date, Task, What Worked, What Failed, Why, Actionable Insights. Read it at the start of new tasks. Summarize when it exceeds ~60KB.
+After changes/research/tasks, append to `AI-HISTORY.md`: Date, Task, What Worked, What Failed, Why, Actionable Insights. Read it at the start of new tasks. Summarize when it exceeds ~10KB.
