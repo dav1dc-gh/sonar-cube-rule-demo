@@ -1,12 +1,57 @@
-# sonar-cube-rule-demo
+```
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                  ║
+║   ███████╗ ██████╗ ███╗   ██╗ █████╗ ██████╗  ██████╗ ██╗   ██╗██████╗ ███████╗ ║
+║   ██╔════╝██╔═══██╗████╗  ██║██╔══██╗██╔══██╗██╔═══██╗██║   ██║██╔══██╗██╔════╝ ║
+║   ███████╗██║   ██║██╔██╗ ██║███████║██████╔╝██║   ██║██║   ██║██████╔╝█████╗   ║
+║   ╚════██║██║   ██║██║╚██╗██║██╔══██║██╔══██╗██║▄▄ ██║██║   ██║██╔══██╗██╔══╝   ║
+║   ███████║╚██████╔╝██║ ╚████║██║  ██║██║  ██║╚██████╔╝╚██████╔╝██████╔╝███████╗ ║
+║   ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚══▀▀═╝  ╚═════╝ ╚═════╝ ╚══════╝ ║
+║                                                                                  ║
+║        ██████╗ ██╗   ██╗██╗     ███████╗    ██████╗ ███████╗███╗   ███╗ ██████╗  ║
+║        ██╔══██╗██║   ██║██║     ██╔════╝    ██╔══██╗██╔════╝████╗ ████║██╔═══██╗ ║
+║        ██████╔╝██║   ██║██║     █████╗      ██║  ██║█████╗  ██╔████╔██║██║   ██║ ║
+║        ██╔══██╗██║   ██║██║     ██╔══╝      ██║  ██║██╔══╝  ██║╚██╔╝██║██║   ██║ ║
+║        ██║  ██║╚██████╔╝███████╗███████╗    ██████╔╝███████╗██║ ╚═╝ ██║╚██████╔╝ ║
+║        ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝    ╚═════╝ ╚══════╝╚═╝     ╚═╝ ╚═════╝  ║
+║                                                                                  ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
+```
 
-An example of how Copilot can be leveraged to assist with creating and managing SonarQube Rules Files
+> *An example of how Copilot can be leveraged to assist with creating and managing SonarQube Rules Files*
 
-## Overview
+---
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│   ___                        _                              │
+│  / _ \__   _____ _ ____   _(_) _____      __               │
+│ | | | \ \ / / _ \ '__\ \ / / |/ _ \ \ /\ / /              │
+│ | |_| |\ V /  __/ |   \ V /| |  __/\ V  V /               │
+│  \___/  \_/ \___|_|    \_/ |_|\___| \_/\_/                 │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
 This repository contains a collection of SonarQube rule definitions organized by category. Each rule is defined in JSON format following SonarQube's rule specification standards.
 
-## Directory Structure
+---
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  ____  _               _                                    │
+│ |  _ \(_)_ __ ___  ___| |_ ___  _ __ _   _                 │
+│ | | | | | '__/ _ \/ __| __/ _ \| '__| | | |                │
+│ | |_| | | | |  __/ (__| || (_) | |  | |_| |                │
+│ |____/|_|_|  \___|\___|\__\___/|_|   \__, |                │
+│  ____  _                   _                |___/           │
+│ / ___|| |_ _ __ _   _  ___| |_ _   _ _ __ ___             │
+│ \___ \| __| '__| | | |/ __| __| | | | '__/ _ \            │
+│  ___) | |_| |  | |_| | (__| |_| |_| | | |  __/            │
+│ |____/ \__|_|   \__,_|\___|\__|\__,_|_|  \___|            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ```
 rules/
@@ -68,9 +113,15 @@ rules/
     └── too-many-parameters.json
 ```
 
-## Rule Categories
+---
 
-### Security (15 rules)
+```
+╦═╗┬ ┬┬  ┌─┐  ╔═╗┌─┐┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌─┐
+╠╦╝│ ││  ├┤   ║  ├─┤ │ ├┤ │ ┬│ │├┬┘│├┤ └─┐
+╩╚═└─┘┴─┘└─┘  ╚═╝┴ ┴ ┴ └─┘└─┘└─┘┴└─┴└─┘└─┘
+```
+
+### 🛡️ Security (15 rules)
 - **Command Injection**: Detects OS command injection vulnerabilities where user input is passed to system commands
 - **CSRF Vulnerability**: Detects missing Cross-Site Request Forgery protection on state-changing operations
 - **Hardcoded Credentials**: Finds hardcoded passwords and API keys
@@ -87,7 +138,7 @@ rules/
 - **XML External Entity (XXE)**: Detects XML parsers configured to process external entities leading to XXE attacks
 - **XSS Vulnerability**: Identifies Cross-Site Scripting risks
 
-### Code Smells (13 rules)
+### 🧹 Code Smells (13 rules)
 - **Complex Methods**: Flags methods with high cyclomatic complexity
 - **Data Clumps**: Detects groups of variables that frequently appear together across multiple methods or classes
 - **Dead Code**: Detects unreachable code, unused variables, methods, or classes
@@ -102,7 +153,7 @@ rules/
 - **Refused Bequest**: Detects subclasses that override inherited methods to do nothing or throw exceptions
 - **Speculative Generality**: Detects unused abstractions created for hypothetical future requirements
 
-### Performance (12 rules)
+### ⚡ Performance (12 rules)
 - **Connection Pool Exhaustion**: Detects database or HTTP connections that are not properly closed or returned to the pool
 - **Excessive Object Creation**: Detects unnecessary object allocation in frequently executed code paths
 - **Inefficient Collection Usage**: Detects improper use of collections and missing initial capacity
@@ -116,7 +167,7 @@ rules/
 - **Unnecessary Boxing**: Detects unnecessary conversions between primitives and wrapper classes
 - **Unoptimized Regex**: Detects regular expressions compiled repeatedly or susceptible to catastrophic backtracking
 
-### Maintainability (12 rules)
+### 🔧 Maintainability (12 rules)
 - **Boolean Blindness**: Detects methods with multiple boolean parameters whose meaning is unclear at the call site
 - **Circular Dependencies**: Detects circular dependencies between packages, modules, or classes
 - **Deep Nesting**: Detects code with excessive nesting levels reducing readability
@@ -130,7 +181,13 @@ rules/
 - **Shotgun Surgery**: Detects changes that require many small modifications across multiple classes
 - **Too Many Parameters**: Detects methods with excessive parameters
 
-## Rule Structure
+---
+
+```
+╦═╗┬ ┬┬  ┌─┐  ╔═╗┌┬┐┬─┐┬ ┬┌─┐┌┬┐┬ ┬┬─┐┌─┐
+╠╦╝│ ││  ├┤   ╚═╗ │ ├┬┘│ ││   │ │ │├┬┘├┤ 
+╩╚═└─┘┴─┘└─┘  ╚═╝ ┴ ┴└─└─┘└─┘ ┴ └─┘┴└─└─┘
+```
 
 Each rule file contains:
 - `key`: Unique identifier for the rule
@@ -144,14 +201,51 @@ Each rule file contains:
 - `debt`: Technical debt estimation
 - `params`: Configurable parameters (when applicable)
 
-## Usage
+---
+
+```
+╦ ╦┌─┐┌─┐┌─┐┌─┐
+║ ║└─┐├─┤│ ┬├┤ 
+╚═╝└─┘┴ ┴└─┘└─┘
+```
 
 These rule definitions can be imported into SonarQube custom rule plugins or used as reference for creating custom quality profiles.
 
-## Contributing
+---
+
+```
+╔═╗┌─┐┌┐┌┌┬┐┬─┐┬┌┐ ┬ ┬┌┬┐┬┌┐┌┌─┐
+║  │ ││││ │ ├┬┘│├┴┐│ │ │ │││││ ┬
+╚═╝└─┘┘└┘ ┴ ┴└─┴└─┘└─┘ ┴ ┴┘└┘└─┘
+```
 
 When adding new rules:
 1. Place them in the appropriate category directory
 2. Follow the existing JSON structure
 3. Include clear descriptions and remediation examples
 4. Set appropriate severity and type classifications
+
+---
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║  ██████╗ ██╗   ██╗██╗██╗  ████████╗  ██╗    ██╗██╗████████╗██╗  ██╗  ║
+║  ██╔══██╗██║   ██║██║██║  ╚══██╔══╝  ██║    ██║██║╚══██╔══╝██║  ██║  ║
+║  ██████╔╝██║   ██║██║██║     ██║     ██║ █╗ ██║██║   ██║   ███████║  ║
+║  ██╔══██╗██║   ██║██║██║     ██║     ██║███╗██║██║   ██║   ██╔══██║  ║
+║  ██████╔╝╚██████╔╝██║███████╗██║     ╚███╔███╔╝██║   ██║   ██║  ██║  ║
+║  ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═╝      ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝  ║
+║                                                              ║
+║            ██████╗ ██████╗ ██████╗ ██╗██╗      ██████╗ ████████╗         ║
+║           ██╔════╝██╔═══██╗██╔══██╗██║██║     ██╔═══██╗╚══██╔══╝        ║
+║           ██║     ██║   ██║██████╔╝██║██║     ██║   ██║   ██║           ║
+║           ██║     ██║   ██║██╔═══╝ ██║██║     ██║   ██║   ██║           ║
+║           ╚██████╗╚██████╔╝██║     ██║███████╗╚██████╔╝   ██║           ║
+║            ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝ ╚═════╝    ╚═╝           ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+<p align="center">
+  <sub>⚡ Powered by GitHub Copilot | 52 Rules | 4 Categories ⚡</sub>
+</p>
